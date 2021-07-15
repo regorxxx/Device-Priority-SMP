@@ -1,8 +1,8 @@
 # Device-Priority-SMP
 [![version][version_badge]][changelog]
-[![CodeFactor][codefactor_badge]](https://www.codefactor.io/repository/github/regorxxx/ Device-Priority-SMP/overview/main)
-[![CodacyBadge][codacy_badge]](https://www.codacy.com/gh/regorxxx/ Device-Priority-SMP/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=regorxxx/ Device-Priority-SMP&amp;utm_campaign=Badge_Grade)
-![GitHub](https://img.shields.io/github/license/regorxxx/ Device-Priority-SMP)  
+[![CodeFactor][codefactor_badge]](https://www.codefactor.io/repository/github/regorxxx/Device-Priority-SMP/overview/main)
+[![CodacyBadge][codacy_badge]](https://www.codacy.com/gh/regorxxx/Device-Priority-SMP/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=regorxxx/Device-Priority-SMP&amp;utm_campaign=Badge_Grade)
+![GitHub](https://img.shields.io/github/license/regorxxx/Device-Priority-SMP)  
 [Spider Monkey Panel](https://theqwertiest.github.io/foo_spider_monkey_panel) Script for [foobar2000](https://www.foobar2000.org), built within a button toolbar. Automate foobar2000's output without having to select devices manually every time one is disconnected/connected. Wireless, headphone, and server devices auto-switch made easy.
 
 ![Animation7](https://user-images.githubusercontent.com/83307074/116756221-471e8500-a9fb-11eb-96c9-2c269bf91fef.gif)
@@ -35,6 +35,6 @@ For portable installations <= 1.5: .\foobar2000\scripts\SMP\xxx-scripts\...
 Then load 'buttons_device_priority.js' (button) into a SMP panel within foobar. If you already have the toolbar from any of my other scripts, just load the button using the config menu on the toolbar within foobar2000.
 
 [changelog]: CHANGELOG.md
-[version_badge]: https://img.shields.io/github/release/regorxxx/ Device-Priority-SMP.svg
+[version_badge]: https://img.shields.io/github/release/regorxxx/Device-Priority-SMP.svg
 [codacy_badge]: https://api.codacy.com/project/badge/Grade/e04be28637dd40d99fae7bd92f740677
-[codefactor_badge]: https://www.codefactor.io/repository/github/regorxxx/ Device-Priority-SMP/badge/main
+[codefactor_badge]: https://www.codefactor.io/repository/github/regorxxx/Device-Priority-SMP/badge/main
