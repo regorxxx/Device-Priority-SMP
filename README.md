@@ -3,7 +3,7 @@
 [![CodeFactor][codefactor_badge]](https://www.codefactor.io/repository/github/regorxxx/Device-Priority-SMP/overview/main)
 [![CodacyBadge][codacy_badge]](https://www.codacy.com/gh/regorxxx/Device-Priority-SMP/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=regorxxx/Device-Priority-SMP&amp;utm_campaign=Badge_Grade)
 ![GitHub](https://img.shields.io/github/license/regorxxx/Device-Priority-SMP)  
-[Spider Monkey Panel](https://theqwertiest.github.io/foo_spider_monkey_panel) Script for [foobar2000](https://www.foobar2000.org), built within a button toolbar. Automate foobar2000's output without having to select devices manually every time one is disconnected/connected. Wireless, headphone, and server devices auto-switch made easy.
+[Spider Monkey Panel](https://theqwertiest.github.io/foo_spider_monkey_panel) Script for [foobar2000](https://www.foobar2000.org), built within a button. Automate foobar2000's output without having to select devices manually every time one is disconnected/connected. Wireless, headphone, and server devices auto-switch made easy.
 
 ![Auto-device](https://user-images.githubusercontent.com/83307074/125860905-3127eee3-5618-4487-a181-b8defbd6031f.gif)
 
