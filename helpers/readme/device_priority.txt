@@ -1,5 +1,4 @@
-﻿Automate foobar2000's output without having to select devices manually every time one is disconnected/connected. 
-Wireless, headphone, and server devices auto-switch made easy.
+﻿Automate foobar2000's output without having to select it manually every time:
 	- Device 1 is connected, select it as output.
 	- Otherwise, fall back to Device 2 instead of just selecting "nothing" as output.
 	- Otherwise, .... [device 3]
