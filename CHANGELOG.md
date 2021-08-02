@@ -9,6 +9,7 @@
 ### Added
 ### Changed
 - Updated buttons and helpers file for compatibility with the other scripts.
+- Helpers: updated. Whenever a folder needs to be created to save a new file, the entire tree is now created if needed. Previously it would fail as soon as any folder did not exist. This greatly speeds up setting panels since now the final folder does not need to exists at all to work, since it will be created on the fly.
 ### Removed
 ### Fixed
 
