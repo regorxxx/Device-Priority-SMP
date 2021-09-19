@@ -37,9 +37,9 @@ var newButtons = {
 		}});
 		menu.newEntry({entryText: 'sep'})
 		const subMenuName = [];
-		const options = _isFile(folders.data + 'devices.json') ? _jsonParseFile(folders.data + 'devices.json') : (isCompatible('1.4.0') ?  JSON.parse(fb.GetOutputDevices()) : []);
+		const options = _isFile(folders.data + 'devices.json') ? _jsonParseFile(folders.data + 'devices.json', convertCharsetToCodepage('UTF-8')) : (isCompatible('1.4.0') ?  JSON.parse(fb.GetOutputDevices()) : []);
 		const optionsName = [];
-		const priorityList = _isFile(folders.data + 'devices_priority.json') ? _jsonParseFile(folders.data + 'devices_priority.json') : Array(size);
+		const priorityList = _isFile(folders.data + 'devices_priority.json') ? _jsonParseFile(folders.data + 'devices_priority.json', convertCharsetToCodepage('UTF-8')) : Array(size);
 		// const addToOptions = priorityList.filter(Boolean).map((_) => {return {name: _};});
 		range(1, size, 1).forEach((idx) => {
 			subMenuName.push(menu.newMenu('Set Device ' + idx));
@@ -96,7 +96,7 @@ repeatFn(() => {
 
 function onOutputDeviceChanged() { 
 	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
-	const priorityList = _isFile(folders.data + 'devices_priority.json') ? _jsonParseFile(folders.data + 'devices_priority.json') : [];
+	const priorityList = _isFile(folders.data + 'devices_priority.json') ? _jsonParseFile(folders.data + 'devices_priority.json', convertCharsetToCodepage('UTF-8')) : [];
 	if (!priorityList.length) {return;}
 	const devices =  JSON.parse(fb.GetOutputDevices());
 	let bDone = false;
