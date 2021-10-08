@@ -1,24 +1,19 @@
 ﻿'use strict';
+//07/10/21
 
 include('helpers_xxx_prototypes.js');
 include('helpers_xxx_UI.js');
+include('helpers_xxx_flags.js');
 
 /* 
 	This is the framework to create buttons as new objects with its own properties and tooltips. They can be merged and loaded multiple times
 	as new buttons instances on the same toolbar. Coordinates get updated when loading multiple buttons, removing the need to manually set them.
-	Check "_buttons_blank.js" to see the universal buttons structure. It loads on foobar but does nothing, it's just empty.
-	Check "_buttons_blank_merged.js" to see the universal structure for merging butons, creating an entire bar
-	Check "_buttons_example.js" for a working example of buttons within foobar.
-	Check "_buttons_example_merged.js" for a working example of a buttons bar within foobar.
-	Check "_buttons_example_merged_double.js" for a working example of merging multiple buttons and bars within foobar.
+	Check '_buttons_blank.js' to see the universal buttons structure. It loads on foobar but does nothing, it's just empty.
+	Check '_buttons_blank_merged.js' to see the universal structure for merging butons, creating an entire bar
+	Check '_buttons_example.js' for a working example of buttons within foobar.
+	Check '_buttons_example_merged.js' for a working example of a buttons bar within foobar.
+	Check '_buttons_example_merged_double.js' for a working example of merging multiple buttons and bars within foobar.
 */
-
-const ButtonStates = {
-	normal: 0,
-	hover: 1,
-	down: 2,
-	hide: 3
-};
 
 const buttonsBar = {};
 buttonsBar.list = [];
@@ -32,6 +27,7 @@ const bShowID = true; // Show Prefixes + ID on tooltips
 // Toolbar color fix
 var bToolbar = false; // Change this on buttons bars files to set the background color
 var toolbarColor = RGB(211,218,237);
+var textColor = RGB(0,0,0);
 
 let g_down = false;
 let cur_btn = null;
@@ -58,7 +54,7 @@ function calcNextButtonCoordinates(buttonCoordinates,  buttonOrientation = 'x' ,
 	return newCoordinates;
 }
 
-function SimpleButton(x, y, w, h, text, fonClick, state, g_font = _gdiFont('Segoe UI', 12), description, prefix = "", buttonsProperties = {}, icon = null, g_font_icon = _gdiFont('FontAwesome', 12)) {
+function SimpleButton(x, y, w, h, text, fonClick, state, g_font = _gdiFont('Segoe UI', 12), description, prefix = '', buttonsProperties = {}, icon = null, g_font_icon = _gdiFont('FontAwesome', 12)) {
 	this.state = state ? state : ButtonStates.normal;
 	this.x = x;
 	this.y = y;
@@ -75,7 +71,7 @@ function SimpleButton(x, y, w, h, text, fonClick, state, g_font = _gdiFont('Sego
 	this.iconWidth = _isFunction(this.icon) ? () => {return _gr.CalcTextWidth(this.icon(), g_font_icon);} : _gr.CalcTextWidth(this.icon, g_font_icon);
 	this.fonClick = fonClick;
 	this.prefix = prefix; // This let us identify properties later for different instances of the same button, like an unique ID
-	this.descriptionWithID = _isFunction(this.description) ? (parent) => {return (this.prefix ? this.prefix.replace("_","") + ': ' + this.description(parent) : this.description(parent));} : () => {return (this.prefix ? this.prefix.replace("_","") + ': ' + this.description : this.description);}; // Adds prefix to description, whether it's a func or a string
+	this.descriptionWithID = _isFunction(this.description) ? (parent) => {return (this.prefix ? this.prefix.replace('_','') + ': ' + this.description(parent) : this.description(parent));} : () => {return (this.prefix ? this.prefix.replace('_','') + ': ' + this.description : this.description);}; // Adds prefix to description, whether it's a func or a string
 	this.buttonsProperties = Object.assign({}, buttonsProperties); // Clone properties for later use
 
 	this.containXY = function (x, y) {
@@ -126,11 +122,11 @@ function SimpleButton(x, y, w, h, text, fonClick, state, g_font = _gdiFont('Sego
 			let textWidthCalculated = _isFunction(this.text) ? this.textWidth() : this.textWidth;
 			let iconCalculated = _isFunction(this.icon) ? this.icon() : this.icon;
 			let textCalculated = _isFunction(this.text) ? this.text() : this.text;
-			gr.GdiDrawText(iconCalculated, this.g_font_icon, RGB(0, 0, 0), x_calc - iconWidthCalculated / 5 - textWidthCalculated / 2, y_calc, w_calc, h_calc, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX); // Icon
-			gr.GdiDrawText(textCalculated, this.g_font, RGB(0, 0, 0), x_calc + iconWidthCalculated, y_calc, w_calc, h_calc, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX); // Text
+			gr.GdiDrawText(iconCalculated, this.g_font_icon, textColor, x_calc - iconWidthCalculated / 5 - textWidthCalculated / 2, y_calc, w_calc, h_calc, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX); // Icon
+			gr.GdiDrawText(textCalculated, this.g_font, textColor, x_calc + iconWidthCalculated, y_calc, w_calc, h_calc, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX); // Text
 		} else {
 			let textCalculated = _isFunction(this.text) ? this.text() : this.text;
-			gr.GdiDrawText(textCalculated, this.g_font, RGB(0, 0, 0), x_calc, y_calc, w_calc, h_calc, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX); // Text
+			gr.GdiDrawText(textCalculated, this.g_font, textColor, x_calc, y_calc, w_calc, h_calc, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX); // Text
 		}
 	};
 
@@ -215,6 +211,12 @@ function on_mouse_lbtn_down(x, y, mask) {
 	}
 }
 
+function on_mouse_rbtn_up(x, y, mask) {
+	// Must return true, if you want to suppress the default context menu.
+	// Note: left shift + left windows key will bypass this callback and will open default context menu.
+	return buttonsBar.hasOwnProperty('menu') ? buttonsBar.menu().btn_up(x, this.y + this.h) : false;
+}
+
 function on_mouse_lbtn_up(x, y, mask) {
 	g_down = false;
 
@@ -225,7 +227,7 @@ function on_mouse_lbtn_up(x, y, mask) {
 			window.Repaint();
 		}
 	} else if (mask === MK_SHIFT) {
-		if (buttonsBar.hasOwnProperty('menu')) {buttonsBar.menu().btn_up(x, this.y + this.h);}
+		if (buttonsBar.hasOwnProperty('shiftMenu')) {buttonsBar.shiftMenu().btn_up(x, this.y + this.h);}
 	}
 }
 
@@ -237,12 +239,12 @@ function on_size() {
 }
 
 
-function getUniquePrefix(string, sep = "_"){
-	if (string === null || string === "") {return "";}
-	let newPrefix = string.replace(sep,"") + 0;  // First ID
+function getUniquePrefix(string, sep = '_'){
+	if (string === null || !string.length) {return '';}
+	let newPrefix = string.replace(sep,'') + 0;  // First ID
 	let i = 1;
 	while (propertiesPrefixes.has(newPrefix)) { // The rest
-		newPrefix = string.replace(sep,"") + i;
+		newPrefix = string.replace(sep,'') + i;
 		i++;
 	}
 	propertiesPrefixes.add(newPrefix);

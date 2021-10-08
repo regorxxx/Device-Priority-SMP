@@ -1,5 +1,5 @@
 ﻿'use strict';
-//01/06/21
+//07/10/21
 
 include('helpers_xxx_file.js');
 
@@ -24,7 +24,7 @@ function isCompatible(requiredVersionStr = '1.4.0') {
 }
 
 function checkCompatible(requiredVersionStr = '1.4.0') {
-	if (!is_compatible(requiredVersionStr)) {
+	if (!isCompatible(requiredVersionStr)) {
 		fb.ShowPopupMessage('This script requires v' + requiredVersionStr + '. Current component version is v' + utils.Version + '.');
 	}
 }

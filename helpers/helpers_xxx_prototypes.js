@@ -1,5 +1,5 @@
 ﻿'use strict';
-//01/06/21
+//07/10/21
 
 /* 
 	Objects
@@ -9,6 +9,13 @@ function compareKeys(a, b) {
 	const aKeys = Object.keys(a).sort();
 	const bKeys = Object.keys(b).sort();
 	return JSON.stringify(aKeys) === JSON.stringify(bKeys);
+}
+
+function isJSON(str) {
+	let bDone = true;
+	try {JSON.parse(str);}
+	catch (e) {bDone = false;}
+	return bDone;
 }
 
 /* 
@@ -201,11 +208,11 @@ Set.prototype.differenceSize = function(setB) {
 */
 
 function isInt(n){
-    return Number(n) === n && n % 1 === 0;
+    return Number(n) === n && Number.isFinite(n) && n <= Number.MAX_SAFE_INTEGER && n % 1 === 0;
 }
 
 function isFloat(n){
-    return Number(n) === n && n % 1 !== 0;
+    return Number(n) === n && Number.isFinite(n) && n % 1 !== 0;
 }
 
 // Adds/subtracts 'offset' to 'reference' considering the values must follow cyclic logic within 'limits' range (both values included)

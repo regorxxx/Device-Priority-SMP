@@ -1,5 +1,5 @@
 ﻿'use strict';
-//01/06/21
+//07/10/21
 
 include('helpers_xxx_file.js');
 
@@ -181,7 +181,7 @@ function enumeratePropertiesValues(propertiesDescriptor, prefix = '', count = 1,
 function checkProperty(property, withValue) {
 	let bPass = true;
 	let report = '';
-	if (property.length !== 4) {return true;}  // No checks needed (?)
+	if (property.length < 4) {return true;}  // No checks needed (?)
 	const valToCheck = (typeof withValue !== 'undefined' ? withValue : property[1]);
 	const checks = property[2];
 	if (checks.hasOwnProperty('lower') && valToCheck >= checks['lower']) {
@@ -210,7 +210,7 @@ function checkProperty(property, withValue) {
 		// TODO warn about using relative paths?
 	}
 	if (!bPass) {
-		fb.ShowPopupMessage('Property value is wrong. Using default value as fallback:\n\'' + property[0] + '\'\nWrong value: ' + valToCheck + '\nReplaced with: ' + property[3] + '\n' + report);
+		fb.ShowPopupMessage('Property value is wrong. Using default value as fallback:\n\'' + property[0] + '\'\n\nWrong value: ' + valToCheck + '\n\nReplaced with: ' + property[3] + '\n\n' + report);
 	}
 	return bPass;
 }
