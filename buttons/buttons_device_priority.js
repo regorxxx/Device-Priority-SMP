@@ -22,6 +22,14 @@ try { //May be loaded along other buttons
 
 buttonsBar.list.push({});
 
+if (_isFile(folders.data + 'devices_priority.json')) { // TODO: Remove later, for compatibility purpose with old versions
+	const priorityList = _jsonParseFile(folders.data + 'devices_priority.json', convertCharsetToCodepage('UTF-8'));
+	if (priorityList.some((device) => {return typeof device !== 'object' || !device.hasOwnProperty('name');})) {
+		_deleteFile(folders.data + 'devices_priority.json');
+		fb.ShowPopupMessage('Old devices priority file has been deleted:\n' + folders.data + 'devices_priority.json' + '\nNew script version uses another format {name, device_id}, please recreate it if needed.\n\n' + JSON.stringify(priorityList, null, '\t'), 'Output device priority');
+	}
+}
+
 var newButtons = {
 	menuButton: new SimpleButton(calcNextButtonCoordinates(buttonCoordinates, buttonOrientation, buttonOrientation === 'x' ? true : false).x, calcNextButtonCoordinates(buttonCoordinates, buttonOrientation, buttonOrientation === 'x' ? false : true).y, buttonCoordinates.w, buttonCoordinates.h, 'Auto-device', function (mask) {
 		if (!isCompatible('1.4.0')) {return;}
@@ -39,12 +47,13 @@ var newButtons = {
 		const subMenuName = [];
 		const options = _isFile(folders.data + 'devices.json') ? _jsonParseFile(folders.data + 'devices.json', convertCharsetToCodepage('UTF-8')) : (isCompatible('1.4.0') ?  JSON.parse(fb.GetOutputDevices()) : []);
 		const optionsName = [];
-		const priorityList = _isFile(folders.data + 'devices_priority.json') ? _jsonParseFile(folders.data + 'devices_priority.json', convertCharsetToCodepage('UTF-8')) : Array(size);
+		const priorityList = _isFile(folders.data + 'devices_priority.json') ? _jsonParseFile(folders.data + 'devices_priority.json', convertCharsetToCodepage('UTF-8')) : [...Array(size)].map((_) => {return {name: null, device_id: null};});
+		console.log(priorityList);
 		// const addToOptions = priorityList.filter(Boolean).map((_) => {return {name: _};});
 		range(1, size, 1).forEach((idx) => {
 			subMenuName.push(menu.newMenu('Set Device ' + idx));
 			const currMenu = subMenuName[idx - 1];
-			const currDev = priorityList[idx - 1];
+			const currDev = priorityList[idx - 1].hasOwnProperty('name') ? priorityList[idx - 1].name : null;
 			const currDevR = currDev ? currDev.replace('DS :', '').replace('ASIO :', '') : '';
 			menu.newEntry({menuName: currMenu, entryText: 'Current device: ' + (currDev ? (currDevR.length > 20 ? currDevR.substring(0,20) + ' ...' : currDevR) : '-') , func: null, flags: MF_GRAYED});
 			menu.newEntry({menuName: currMenu, entryText: 'sep'});
@@ -60,14 +69,14 @@ var newButtons = {
 					// Entries
 					optionsName.push(deviceName);
 					menu.newEntry({menuName: currMenu, entryText: deviceName, func: () => {
-						priorityList[idx - 1] = entry.name !== 'None' ? entry.name : null;
+						priorityList[idx - 1] = entry.name !== 'None' ? {name: entry.name, device_id: entry.device_id} : {name: null, device_id: null};
 						if (!_isFolder(folders.data)) {_createFolder(folders.data);}
 						if (!_save(folders.data + 'devices_priority.json', JSON.stringify(priorityList, null, '\t'))) {console.log('Output device priority: file saving failed (' + folders.data + 'devices_priority.json)');}
 					}, flags: index === 1 ? MF_GRAYED : MF_ENABLED});
 				}
 			});
 			menu.newCheckMenu(currMenu, optionsName[0], optionsName[optionsName.length - 1],  () => {
-				const currOption = priorityList[idx - 1];
+				const currOption = priorityList[idx - 1].hasOwnProperty('name') ? priorityList[idx - 1].name : null;
 				const id = currOption && currOption.length ? options.findIndex((item) => {return item.name === currOption}) : 0;
 				return (id !== -1 ? (id !== 0 ? id + 2 : 0) : 1);
 			});
@@ -97,17 +106,17 @@ repeatFn(() => {
 function onOutputDeviceChanged() { 
 	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
 	const priorityList = _isFile(folders.data + 'devices_priority.json') ? _jsonParseFile(folders.data + 'devices_priority.json', convertCharsetToCodepage('UTF-8')) : [];
-	if (!priorityList.length) {return;}
+	if (!priorityList || !priorityList.length) {return;}
 	const devices =  JSON.parse(fb.GetOutputDevices());
 	let bDone = false;
 	priorityList.forEach( (device) => {
-		if (!device || !device.length) {return;}
+		if (typeof device !== 'object' || !device.hasOwnProperty('name')) {return;}
 		if (bDone) {return;}
-		const idx = devices.findIndex((dev) => {return dev.name === device;});
+		const idx = devices.findIndex((dev) => {return dev.name === device.name || dev.device_id === device.device_id;});
 		if (idx !== -1) {
 			if (devices[idx].active) {bDone = true; return;}
 			fb.SetOutputDevice(devices[idx].output_id, devices[idx].device_id); 
-			console.log('Auto-Switch output device to: ' + device);
+			console.log('Auto-Switch output device to: ', device.name, device.device_id);
 			if (fb.IsPaused) {fb.PlayOrPause();} // Workaround for Bluetooth devices pausing on power off
 			bDone = true;
 		}
