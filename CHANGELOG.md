@@ -2,14 +2,21 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
-- [1.0.1](#101---2021-07-16)
-- [1.0.0](#100---2021-07-16)
+- [1.0.1](#101---2021-10-10)
+- [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
 ### Added
 ### Changed
 ### Removed
 ### Fixed
+
+## [1.0.1] - 2021-10-10
+### Added
+### Changed
+### Removed
+### Fixed
+- Added missing helper.
 
 ## [1.0.0] - 2021-09-10
 ### Added
