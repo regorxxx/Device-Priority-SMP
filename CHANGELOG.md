@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.1.0](#110---2021-10-14)
 - [1.0.1](#101---2021-10-10)
 - [1.0.0](#100---2021-09-10)
 
@@ -10,6 +11,15 @@
 ### Changed
 ### Removed
 ### Fixed
+
+## [1.1.0] - 2021-10-14
+### Added
+- New menu entry 'Add new devices to list' which adds any non present device to the list of available options. This can be used as workaround instead of connecting all devices which will be used to create the complete list, adding devices on demand in an incremental way... much easier than recreating the entire list whenever a change has to be made.
+### Changed
+- Helpers: additional checks at json loading on all scripts. Warnings via popup when a corrupted file is found.
+### Removed
+### Fixed
+- Fixed crash when loading corrupt devices json file. Now warns about it with a popup.
 
 ## [1.0.1] - 2021-10-10
 ### Added
@@ -25,6 +35,7 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/43d0aea...v1.0.0
