@@ -1,5 +1,5 @@
 ﻿'use strict';
-//13/10/21
+//10/02/22
 
 /* 
 	Output device priority
@@ -11,17 +11,25 @@ include('..\\helpers\\buttons_xxx.js');
 include('..\\helpers\\helpers_xxx.js');
 include('..\\helpers\\helpers_xxx_file.js');
 include('..\\helpers\\menu_xxx.js');
+var prefix = 'dp_';
+
 try { //May be loaded along other buttons
 	window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});
 	var g_font = _gdiFont('Segoe UI', 12);
 	var buttonCoordinates = {x: 0, y: 0, w: 98, h: 22};
-	var buttonOrientation = 'x';
 } catch (e) {
-	buttonCoordinates = {x: 0, y: 0, w: buttonOrientation === 'x' ? 98 : buttonCoordinates.w , h: buttonOrientation === 'y' ? 22 : buttonCoordinates.h}; // Reset 
+	buttonCoordinates = {x: 0, y: 0, w: buttonsBar.config.buttonOrientation === 'x' ? 98 : buttonCoordinates.w , h: buttonsBar.config.buttonOrientation === 'y' ? 22 : buttonCoordinates.h}; // Reset 
 	console.log('Output device priority Button loaded.');
 }
 
-buttonsBar.list.push({});
+prefix = getUniquePrefix(prefix, '_'); // Puts new ID before '_'
+var newButtonsProperties = { //You can simply add new properties here
+	bStartup:	['Force device at startup?', true]
+};
+newButtonsProperties['bStartup'].push({func: isBoolean}, newButtonsProperties['bStartup'][1]);
+
+setProperties(newButtonsProperties, prefix); //This sets all the panel properties at once
+buttonsBar.list.push(getPropertiesPairs(newButtonsProperties, prefix));
 const devicesFile = folders.data + 'devices.json';
 const devicesPriorityFile = folders.data + 'devices_priority.json';
 
@@ -34,8 +42,8 @@ if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility pur
 }
 
 var newButtons = {
-	menuButton: new SimpleButton(calcNextButtonCoordinates(buttonCoordinates, buttonOrientation, buttonOrientation === 'x' ? true : false).x, calcNextButtonCoordinates(buttonCoordinates, buttonOrientation, buttonOrientation === 'x' ? false : true).y, buttonCoordinates.w, buttonCoordinates.h, 'Auto-device', function (mask) {
-		if (!isCompatible('1.4.0')) {return;}
+	menuButton: new SimpleButton(buttonCoordinates, 'Auto-device', function (mask) {
+		const properties = getPropertiesPairs(this.buttonsProperties, this.prefix); //This gets all the panel properties at once
 		const size = 5;
 		const menu = new _menu();
 		menu.newEntry({entryText: 'Device priority:', func: null, flags: MF_GRAYED});
@@ -45,28 +53,37 @@ var newButtons = {
 			const listExport = JSON.parse(fb.GetOutputDevices()); // Reformat with tabs
 			if (!_save(devicesFile, JSON.stringify(listExport, null, '\t'))) {console.log('Output device priority: file saving failed (' + devicesFile + ')');}
 		}});
-		menu.newEntry({entryText: 'Add new devices to list', func: () => {
-			fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nAdds any device currently attached to the list if it\'s not present (no duplicates). Option is only available after exporting the list at least once.', 'Output device priority');
-			const newDevices = JSON.parse(fb.GetOutputDevices()); // Reformat with tabs
+		{
+			let options;
+			const toAdd = [];
 			if (_isFile(devicesFile)) {
-				const options = _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8'));
-				if (!options) {return;}
-				let bDone = false;
-				newDevices.forEach((newDev, i) => {
-					if (!options.some((oldDev) => {return oldDev.device_id === newDev.device_id || oldDev.name === newDev.name;})) {
-						options.push(newDev);
-						bDone = true;
-					}
-				});
-				if (bDone) {
-					if (!_save(devicesFile, JSON.stringify(options, null, '\t'))) {console.log('Output device priority: file saving failed (' + devicesFile + ')');}
-					else {console.log('Output device priority: no new devices added.');}
+				const newDevices = JSON.parse(fb.GetOutputDevices()); // Reformat with tabs
+				options = _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8'));
+				if (options) {
+					newDevices.forEach((newDev, i) => {
+						if (!options.some((oldDev) => {return oldDev.device_id === newDev.device_id || oldDev.name === newDev.name;})) {
+							toAdd.push(newDev);
+						}
+					});
 				}
 			}
-		}, flags: _isFile(devicesFile) ?  MF_ENABLED : MF_GRAYED});
+			menu.newEntry({entryText: 'Add new devices to list' + (toAdd.length ? '' : '\t-no new devices-'), func: () => {
+				fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nAdds any device currently attached to the list if it\'s not present (no duplicates). Option is only available after exporting the list at least once.', 'Output device priority');
+				if (!options) {return;}
+				toAdd.forEach((newDev, i) => {options.push(newDev);});
+				if (!_save(devicesFile, JSON.stringify(options, null, '\t'))) {console.log('Output device priority: file saving failed (' + devicesFile + ')');}
+				else {console.log('Output device priority: no new devices added.');}
+			}, flags: toAdd.length ?  MF_ENABLED : MF_GRAYED});
+		}
+		menu.newEntry({entryText: 'sep'})
+		menu.newEntry({entryText: 'Force on startup', func: () => {
+			properties['bStartup'][1] = !properties['bStartup'][1];
+			overwriteProperties(properties);
+		}});
+		menu.newCheckMenu(void(0), 'Force on startup', void(0), () => {return properties['bStartup'][1];});
 		menu.newEntry({entryText: 'sep'})
 		const subMenuName = [];
-		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8')) : (isCompatible('1.4.0') ?  JSON.parse(fb.GetOutputDevices()) : []);
+		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8')) : JSON.parse(fb.GetOutputDevices());
 		const optionsName = [];
 		const file = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', convertCharsetToCodepage('UTF-8')) : null;
 		const priorityList = file ? file : [...Array(size)].map((_) => {return {name: null, device_id: null};});
@@ -101,7 +118,7 @@ var newButtons = {
 			});
 		});
 		menu.btn_up(this.x, this.y + this.h);
-	}, null, g_font, () => {return isCompatible('1.4.0') ? 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!' : 'Does not work for SMP <1.4.0';}, null, null, chars.headphones),
+	}, null, g_font, () => {return 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!';}, prefix, newButtonsProperties, chars.headphones),
 };
 // Check if the button list already has the same button ID
 for (var buttonName in newButtons) {
@@ -119,10 +136,10 @@ buttons = {...buttons, ...newButtons};
 let referenceDevices = fb.GetOutputDevices();
 repeatFn(() => {
 	const newDevices = fb.GetOutputDevices();
-	if (newDevices !== referenceDevices) {referenceDevices = newDevices; onOutputDeviceChanged();}
+	if (newDevices !== referenceDevices) {referenceDevices = newDevices; outputDevicePriority();}
 }, 600)();
 
-function onOutputDeviceChanged() { 
+function outputDevicePriority() { 
 	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
 	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', convertCharsetToCodepage('UTF-8')) || [] : [];
 	if (!priorityList.length) {return;}
@@ -146,6 +163,9 @@ if (typeof on_output_device_changed !== 'undefined') {
 	const oldFunc = on_output_device_changed;
 	on_output_device_changed = function() {
 		oldFunc();
-		onOutputDeviceChanged();
+		outputDevicePriority();
 	}
-} else {var on_output_device_changed = onOutputDeviceChanged;}
+} else {var on_output_device_changed = outputDevicePriority;}
+
+// Startup
+if (buttonsBar.list[buttonsBar.list.length - 1]['bStartup'][1]) {outputDevicePriority();}
