@@ -1,5 +1,5 @@
 ﻿'use strict';
-//10/02/22
+//11/02/22
 
 /* 
 	Output device priority
@@ -117,7 +117,7 @@ var newButtons = {
 				return (id !== -1 ? (id !== 0 ? id + 2 : 0) : 1);
 			});
 		});
-		menu.btn_up(this.x, this.y + this.h);
+		menu.btn_up(this.currX, this.currY + this.currH);
 	}, null, g_font, () => {return 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!';}, prefix, newButtonsProperties, chars.headphones),
 };
 // Check if the button list already has the same button ID
