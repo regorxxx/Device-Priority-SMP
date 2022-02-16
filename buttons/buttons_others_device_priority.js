@@ -1,5 +1,5 @@
 ﻿'use strict';
-//11/02/22
+//15/02/22
 
 /* 
 	Output device priority
@@ -41,8 +41,8 @@ if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility pur
 	}
 }
 
-var newButtons = {
-	menuButton: new SimpleButton(buttonCoordinates, 'Auto-device', function (mask) {
+addButton({
+	menuButton: new themedButton(buttonCoordinates, 'Auto-device', function (mask) {
 		const properties = getPropertiesPairs(this.buttonsProperties, this.prefix); //This gets all the panel properties at once
 		const size = 5;
 		const menu = new _menu();
@@ -119,18 +119,7 @@ var newButtons = {
 		});
 		menu.btn_up(this.currX, this.currY + this.currH);
 	}, null, g_font, () => {return 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!';}, prefix, newButtonsProperties, chars.headphones),
-};
-// Check if the button list already has the same button ID
-for (var buttonName in newButtons) {
-	if (buttons.hasOwnProperty(buttonName)) {
-		// fb.ShowPopupMessage('Duplicated button ID (' + buttonName + ') on ' + window.Name);
-		// console.log('Duplicated button ID (' + buttonName + ') on ' + window.Name);
-		Object.defineProperty(newButtons, buttonName + Object.keys(buttons).length, Object.getOwnPropertyDescriptor(newButtons, buttonName));
-		delete newButtons[buttonName];
-	}
-}
-// Adds to current buttons
-buttons = {...buttons, ...newButtons};
+});
 
 // Helpers
 let referenceDevices = fb.GetOutputDevices();
