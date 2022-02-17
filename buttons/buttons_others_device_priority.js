@@ -1,5 +1,5 @@
 ﻿'use strict';
-//15/02/22
+//17/02/22
 
 /* 
 	Output device priority
@@ -13,14 +13,7 @@ include('..\\helpers\\helpers_xxx_file.js');
 include('..\\helpers\\menu_xxx.js');
 var prefix = 'dp_';
 
-try { //May be loaded along other buttons
-	window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});
-	var g_font = _gdiFont('Segoe UI', 12);
-	var buttonCoordinates = {x: 0, y: 0, w: 98, h: 22};
-} catch (e) {
-	buttonCoordinates = {x: 0, y: 0, w: buttonsBar.config.buttonOrientation === 'x' ? 98 : buttonCoordinates.w , h: buttonsBar.config.buttonOrientation === 'y' ? 22 : buttonCoordinates.h}; // Reset 
-	console.log('Output device priority Button loaded.');
-}
+try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});} catch (e) {console.log('Output device priority Button loaded.');} //May be loaded along other buttons
 
 prefix = getUniquePrefix(prefix, '_'); // Puts new ID before '_'
 var newButtonsProperties = { //You can simply add new properties here
@@ -42,7 +35,7 @@ if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility pur
 }
 
 addButton({
-	menuButton: new themedButton(buttonCoordinates, 'Auto-device', function (mask) {
+	menuButton: new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function (mask) {
 		const properties = getPropertiesPairs(this.buttonsProperties, this.prefix); //This gets all the panel properties at once
 		const size = 5;
 		const menu = new _menu();
@@ -118,7 +111,7 @@ addButton({
 			});
 		});
 		menu.btn_up(this.currX, this.currY + this.currH);
-	}, null, g_font, () => {return 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!';}, prefix, newButtonsProperties, chars.headphones),
+	}, null, void(0), () => {return 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!';}, prefix, newButtonsProperties, chars.headphones),
 });
 
 // Helpers
