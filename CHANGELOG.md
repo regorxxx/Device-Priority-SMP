@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.2.0](#120---2022-03-02)
 - [1.1.1](#111---2021-12-23)
 - [1.1.0](#110---2021-10-14)
 - [1.0.1](#101---2021-10-10)
@@ -12,7 +13,25 @@
 ### Changed
 ### Removed
 ### Fixed
+
+## [1.2.0] - 2022-03-02
+### Added
+- New option to force device selection by priority on startup. Enabled by default.
+- Buttons bar: menu entry to change buttons scale (for high resolution screens or non standard DPI settings).
+- Buttons bar: menu entry to enable/disable properties ID on buttons' tooltip.
+- Buttons bar: menu entry to change toolbar orientation: Horizontal / Vertical.
+- Buttons bar: menu entry to change how max button size is set according to the orientation.
+- Buttons bar: buttons can now be freely moved clicking and holding the right mouse button while moving them. This is equivalent to using the menu entry to change buttons position.
+- Buttons bar: menu entry to place buttons on new rows / columns if they fill the entire width or height of the panel. Does not require a reload of the panel.
+### Changed
+- Helpers: updated helpers.
+- Entry to add devices to json file is now greyed out when there are no new devices to add.
+- General cleanup of code and json file formatting.
+- Removed all code and compatibility checks for SMP <1.4.0.
+### Removed
+### Fixed
 - Buttons bar: menu entry to change buttons position was not working properly.
+- Helpers: file deletion failed when file was read-only.
 
 ## [1.1.1] - 2021-12-23
 ### Added
