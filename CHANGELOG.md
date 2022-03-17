@@ -11,9 +11,11 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+- Helpers: updated helpers.
 ### Removed
 ### Fixed
 - Helpers: avoid file reading crashing in any case (even if it's locked by another process).
+- Properties were not being properly renumbered on some cases when moving buttons.
 
 ## [1.2.0] - 2022-03-02
 ### Added
