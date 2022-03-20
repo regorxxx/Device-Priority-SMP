@@ -35,7 +35,7 @@ if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility pur
 }
 
 addButton({
-	menuButton: new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function (mask) {
+	devicePriority: new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function (mask) {
 		const properties = getPropertiesPairs(this.buttonsProperties, this.prefix); //This gets all the panel properties at once
 		const size = 5;
 		const menu = new _menu();
