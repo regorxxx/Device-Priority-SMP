@@ -15,14 +15,18 @@ var prefix = 'dp_';
 
 try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});} catch (e) {console.log('Output device priority Button loaded.');} //May be loaded along other buttons
 
-prefix = getUniquePrefix(prefix, '_'); // Puts new ID before '_'
+prefix = getUniquePrefix(prefix, ''); // Puts new ID before '_'
 var newButtonsProperties = { //You can simply add new properties here
-	bStartup:	['Force device at startup?', true]
+	bStartup:	['Force device at startup?', true],
+	bEnabled:	['Auto-device enabled?', true]
 };
 newButtonsProperties['bStartup'].push({func: isBoolean}, newButtonsProperties['bStartup'][1]);
+newButtonsProperties['bEnabled'].push({func: isBoolean}, newButtonsProperties['bEnabled'][1]);
 
-setProperties(newButtonsProperties, prefix); //This sets all the panel properties at once
-buttonsBar.list.push(getPropertiesPairs(newButtonsProperties, prefix));
+setProperties(newButtonsProperties, prefix, 0); //This sets all the panel properties at once
+newButtonsProperties = getPropertiesPairs(newButtonsProperties, prefix, 0);
+buttonsBar.list.push(newButtonsProperties);
+
 const devicesFile = folders.data + 'devices.json';
 const devicesPriorityFile = folders.data + 'devices_priority.json';
 
@@ -36,10 +40,10 @@ if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility pur
 
 addButton({
 	devicePriority: new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function (mask) {
-		const properties = getPropertiesPairs(this.buttonsProperties, this.prefix); //This gets all the panel properties at once
 		const size = 5;
 		const menu = new _menu();
 		menu.newEntry({entryText: 'Device priority:', func: null, flags: MF_GRAYED});
+		menu.newCheckMenu(void(0), 'Enable Auto-Device?', void(0), () => {return this.buttonsProperties['bEnabled'][1];});
 		menu.newEntry({entryText: 'sep'});
 		menu.newEntry({entryText: 'Export device list' + (_isFile(devicesFile) ?  '\t(overwrite)' : '\t(new)'), func: () => {
 			fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nExport first the device list with all the desired devices connected to use them at a later point (even if the devices are not connected).\n\n\'Set Device X\' menus will only show either currently connected devices or the ones from the exported list.\n\nIn other words, you can only assign devices to the priority list if they are available on the menus. A disconnected device, not available on the exported list, will be shown as \'Not connected device\', with its name at top. Functionality will be the same (for auto-switching purposes) but it will not be on the list of available devices, nor clickable (so you will not be able to set it to another position unless you connect it first).', 'Output device priority');
@@ -69,11 +73,16 @@ addButton({
 			}, flags: toAdd.length ?  MF_ENABLED : MF_GRAYED});
 		}
 		menu.newEntry({entryText: 'sep'})
-		menu.newEntry({entryText: 'Force on startup', func: () => {
-			properties['bStartup'][1] = !properties['bStartup'][1];
-			overwriteProperties(properties);
+		menu.newEntry({entryText: 'Enable Auto-Device?', func: () => {
+			this.buttonsProperties['bEnabled'][1] = !this.buttonsProperties['bEnabled'][1];
+			overwriteProperties(this.buttonsProperties);
+			this.active = this.buttonsProperties['bEnabled'][1];
 		}});
-		menu.newCheckMenu(void(0), 'Force on startup', void(0), () => {return properties['bStartup'][1];});
+		menu.newEntry({entryText: 'Force on startup', func: () => {
+			this.buttonsProperties['bStartup'][1] = !this.buttonsProperties['bStartup'][1];
+			overwriteProperties(this.buttonsProperties);
+		}});
+		menu.newCheckMenu(void(0), 'Force on startup', void(0), () => {return this.buttonsProperties['bStartup'][1];});
 		menu.newEntry({entryText: 'sep'})
 		const subMenuName = [];
 		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8')) : JSON.parse(fb.GetOutputDevices());
@@ -114,6 +123,9 @@ addButton({
 	}, null, void(0), () => {return 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!';}, prefix, newButtonsProperties, chars.headphones),
 });
 
+// Default state
+buttonsBar.buttons.devicePriority.active = buttonsBar.buttons.devicePriority.buttonsProperties.bEnabled[1];
+
 // Helpers
 let referenceDevices = fb.GetOutputDevices();
 repeatFn(() => {
@@ -123,6 +135,7 @@ repeatFn(() => {
 
 function outputDevicePriority() { 
 	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
+	if (!buttonsBar.buttons.devicePriority.buttonsProperties.bEnabled[1]) {return;}
 	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', convertCharsetToCodepage('UTF-8')) || [] : [];
 	if (!priorityList.length) {return;}
 	const devices =  JSON.parse(fb.GetOutputDevices());

@@ -12,6 +12,8 @@
 ### Added
 ### Changed
 - Helpers: updated helpers.
+- Icon: icon is shown with a different color when Auto-device is enabled. Works like a on/off light indicator.
+- Menu: New menu entry to enable/disable the auto-device functionality globally.
 ### Removed
 ### Fixed
 - Helpers: avoid file reading crashing in any case (even if it's locked by another process).
