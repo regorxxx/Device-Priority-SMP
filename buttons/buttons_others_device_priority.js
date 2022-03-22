@@ -53,7 +53,8 @@ addButton({
 		{
 			let options;
 			const toAdd = [];
-			if (_isFile(devicesFile)) {
+			const bFile = _isFile(devicesFile);
+			if (bFile) {
 				const newDevices = JSON.parse(fb.GetOutputDevices()); // Reformat with tabs
 				options = _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8'));
 				if (options) {
@@ -64,13 +65,13 @@ addButton({
 					});
 				}
 			}
-			menu.newEntry({entryText: 'Add new devices to list' + (toAdd.length ? '' : '\t-no new devices-'), func: () => {
+			menu.newEntry({entryText: 'Add new devices to list' + (bFile ? (toAdd.length ? '' : '\t-no new devices-') : '\t(export first)'), func: () => {
 				fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nAdds any device currently attached to the list if it\'s not present (no duplicates). Option is only available after exporting the list at least once.', 'Output device priority');
 				if (!options) {return;}
 				toAdd.forEach((newDev, i) => {options.push(newDev);});
 				if (!_save(devicesFile, JSON.stringify(options, null, '\t'))) {console.log('Output device priority: file saving failed (' + devicesFile + ')');}
 				else {console.log('Output device priority: no new devices added.');}
-			}, flags: toAdd.length ?  MF_ENABLED : MF_GRAYED});
+			}, flags: toAdd.length && bFile ? MF_ENABLED : MF_GRAYED});
 		}
 		menu.newEntry({entryText: 'sep'})
 		menu.newEntry({entryText: 'Enable Auto-Device?', func: () => {
