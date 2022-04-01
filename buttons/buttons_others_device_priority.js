@@ -1,5 +1,5 @@
 ﻿'use strict';
-//17/02/22
+//30/03/22
 
 /* 
 	Output device priority
@@ -77,7 +77,7 @@ addButton({
 		menu.newEntry({entryText: 'Enable Auto-Device?', func: () => {
 			this.buttonsProperties['bEnabled'][1] = !this.buttonsProperties['bEnabled'][1];
 			overwriteProperties(this.buttonsProperties);
-			this.active = this.buttonsProperties['bEnabled'][1];
+			this.switchActive();
 		}});
 		menu.newEntry({entryText: 'Force on startup', func: () => {
 			this.buttonsProperties['bStartup'][1] = !this.buttonsProperties['bStartup'][1];

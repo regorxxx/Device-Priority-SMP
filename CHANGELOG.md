@@ -18,6 +18,8 @@
 ### Removed
 ### Fixed
 - Helpers: avoid file reading crashing in any case (even if it's locked by another process).
+- Helpers: fixed UI slowdowns when required font is not found (due to excessive console logging). Now a warning popup is shown and logging is only done once per session.
+- UI: Icon was not being updated after enabling/disabling the script until panel was redrawn on mouse over.
 - Properties were not being properly renumbered on some cases when moving buttons.
 
 ## [1.2.0] - 2022-03-02
