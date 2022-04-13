@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.2.1](#121---2022-04-13)
 - [1.2.0](#120---2022-03-02)
 - [1.1.1](#111---2021-12-23)
 - [1.1.0](#110---2021-10-14)
@@ -9,6 +10,12 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.2.1] - 2022-04-13
 ### Added
 ### Changed
 - Icon: icon is shown with a different color when Auto-device is enabled. Works like a on/off light indicator.
@@ -72,7 +79,9 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.1...HEAD
+[1.1.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.0...v1.2.1
+[1.1.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.0.0...v1.0.1
