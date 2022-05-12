@@ -178,7 +178,7 @@ function themedButton(coordinates, text, fonClick, state, g_font = _gdiFont('Seg
 			const textWidthCalculated = isFunction(this.text) ? this.textWidth(this) : this.textWidth;
 			const iconCalculated = isFunction(this.icon) ? this.icon(this) : this.icon;
 			if (iconCalculated) { // Icon
- 				if (this.active) { // Draw copy of icon in background blurred
+				if (this.active) { // Draw copy of icon in background blurred
 					let icon = gdi.CreateImage(this.g_font_icon.Size, this.g_font_icon.Size);
 					const g = icon.GetGraphics();
 					g.DrawString(iconCalculated, this.g_font_icon, tintColor(buttonsBar.config.activeColor, 50), 0, 0, this.g_font_icon.Size, this.g_font_icon.Size, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX);
