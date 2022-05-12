@@ -58,7 +58,7 @@ addButton({
 				const newDevices = JSON.parse(fb.GetOutputDevices()); // Reformat with tabs
 				options = _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8'));
 				if (options) {
-					newDevices.forEach((newDev, i) => {
+					newDevices.forEach((newDev) => {
 						if (!options.some((oldDev) => {return oldDev.device_id === newDev.device_id || oldDev.name === newDev.name;})) {
 							toAdd.push(newDev);
 						}
@@ -68,7 +68,7 @@ addButton({
 			menu.newEntry({entryText: 'Add new devices to list' + (bFile ? (toAdd.length ? '' : '\t-no new devices-') : '\t(export first)'), func: () => {
 				fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nAdds any device currently attached to the list if it\'s not present (no duplicates). Option is only available after exporting the list at least once.', 'Output device priority');
 				if (!options) {return;}
-				toAdd.forEach((newDev, i) => {options.push(newDev);});
+				toAdd.forEach((newDev) => {options.push(newDev);});
 				if (!_save(devicesFile, JSON.stringify(options, null, '\t'))) {console.log('Output device priority: file saving failed (' + devicesFile + ')');}
 				else {console.log('Output device priority: no new devices added.');}
 			}, flags: toAdd.length && bFile ? MF_ENABLED : MF_GRAYED});
@@ -89,7 +89,7 @@ addButton({
 		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8')) : JSON.parse(fb.GetOutputDevices());
 		const optionsName = [];
 		const file = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', convertCharsetToCodepage('UTF-8')) : null;
-		const priorityList = file ? file : [...Array(size)].map((_) => {return {name: null, device_id: null};});
+		const priorityList = file ? file : [...Array(size)].map(() => {return {name: null, device_id: null};});
 		range(1, size, 1).forEach((idx) => {
 			subMenuName.push(menu.newMenu('Set Device ' + idx));
 			const currMenu = subMenuName[idx - 1];

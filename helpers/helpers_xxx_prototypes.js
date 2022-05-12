@@ -177,7 +177,8 @@ function isArrayEqual(arrayA, arrayB) {
 Array.prototype.rotate = (function() {
 	const unshift = Array.prototype.unshift, splice = Array.prototype.splice;
 	return function(count) {
-		const len = this.length >>> 0, count = count >> 0;
+		const len = this.length >>> 0;
+		count = count >> 0;
 		unshift.apply(this, splice.call(this, count % len, len));
 		return this;
 	};

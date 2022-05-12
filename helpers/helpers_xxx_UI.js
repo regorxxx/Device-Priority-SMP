@@ -78,7 +78,7 @@ function nextId(method, bNext = true, bCharsForced = true) {
 	}
 }
 
-function getIdRegEx(method, bNext = true, bCharsForced = true) {
+function getIdRegEx(method) {
 	switch (true) {
 		case method === 'invisible':
 			return / \(\*[\u200b\u200c\u200d\u200e]{5}\)$/g;

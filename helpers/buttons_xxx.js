@@ -136,7 +136,7 @@ function themedButton(coordinates, text, fonClick, state, g_font = _gdiFont('Seg
 		return idx !== -1 && this.animation[idx].bActive;
 	};
 	
-	this.isAnyAnimationActive = function (name) {
+	this.isAnyAnimationActive = function () {
 		return this.animation.some((obj) => {return obj.bActive;});
 	};
 
@@ -160,7 +160,6 @@ function themedButton(coordinates, text, fonClick, state, g_font = _gdiFont('Seg
 			}
 			case buttonStates.hide: {
 				return;
-				break;
 			}
 		}
 		// New coordinates must be calculated and stored to interact with UI
@@ -286,8 +285,7 @@ function on_mouse_move(x, y, mask) {
 	let old = buttonsBar.curBtn;
 	const buttons = buttonsBar.buttons;
 	let curBtnKey = '';
-	let curBtnIdx = -1;
-	[buttonsBar.curBtn, curBtnKey, curBtnIdx] = chooseButton(x, y);
+	[buttonsBar.curBtn, curBtnKey, ] = chooseButton(x, y);
 	
 	if (old === buttonsBar.curBtn) {
 		if (buttonsBar.g_down) {
