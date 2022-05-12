@@ -184,7 +184,6 @@ function themedButton(coordinates, text, fonClick, state, g_font = _gdiFont('Seg
 					g.DrawString(iconCalculated, this.g_font_icon, tintColor(buttonsBar.config.activeColor, 50), 0, 0, this.g_font_icon.Size, this.g_font_icon.Size, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_NOPREFIX);
 					icon = icon.Resize(this.g_font_icon.Size + 2, this.g_font_icon.Size + 2, 0);
 					icon.ReleaseGraphics(g);
-					const orientation = buttonsBar.config.orientation.toLowerCase()
 					// Image gets shifted in x and y axis... since it's not using text flags
 					gr.DrawImage(icon, xCalc + wCalc / 2 - iconWidthCalculated * 9/10 - textWidthCalculated / 2, yCalc + iconWidthCalculated * 1/3, wCalc, hCalc, 0, 0, wCalc, hCalc, 0);
 				}
