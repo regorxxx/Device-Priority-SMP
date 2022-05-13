@@ -39,7 +39,7 @@ if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility pur
 }
 
 addButton({
-	devicePriority: new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function (mask) {
+	devicePriority: new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function () {
 		const size = 5;
 		const menu = new _menu();
 		menu.newEntry({entryText: 'Device priority:', func: null, flags: MF_GRAYED});
