@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.2.4](#124---2022-06-25)
 - [1.2.3](#123---2022-05-23)
 - [1.2.2](#122---2022-05-04)
 - [1.2.1](#121---2022-04-13)
@@ -14,6 +15,14 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+### Removed
+### Fixed
+
+## [1.2.4] - 2022-06-05
+### Added
+### Changed
+- UI: enforced SMP version checking via popups.
+- Helpers: updated helpers.
 ### Removed
 ### Fixed
 
@@ -95,7 +104,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.3...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.4...HEAD
+[1.2.4]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.0...v1.2.1
