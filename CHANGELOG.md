@@ -16,6 +16,7 @@
 ### Added
 ### Changed
 - UI: themed buttons are replaced with manually drawn buttons when the first method fails (on Wine for ex.). Console will output: "window.CreateThemeManager('Button') failed, using experimental buttons" in such case.
+- Readmes: rewritten readmes to avoid line wrapping wen showing them within popup for a cleaner presentation.
 - Helpers: updated helpers.
 ### Removed
 ### Fixed

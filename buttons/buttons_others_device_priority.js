@@ -1,5 +1,5 @@
 ﻿'use strict';
-//05/06/22
+//01/07/22
 
 /* 
 	Output device priority
@@ -34,7 +34,7 @@ const devicesFile = folders.data + 'devices.json';
 const devicesPriorityFile = folders.data + 'devices_priority.json';
 
 if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility purpose with old versions
-	const priorityList = _jsonParseFileCheck(devicesPriorityFile, 'Devices priority', 'Output device priority', convertCharsetToCodepage('UTF-8'));
+	const priorityList = _jsonParseFileCheck(devicesPriorityFile, 'Devices priority', 'Output device priority', utf8);
 	if (priorityList && priorityList.some((device) => {return typeof device !== 'object' || !device.hasOwnProperty('name');})) {
 		_deleteFile(devicesPriorityFile);
 		fb.ShowPopupMessage('Old devices priority file has been deleted:\n' + devicesPriorityFile + '\nNew script version uses another format {name, device_id}, please recreate it if needed.\n\n' + JSON.stringify(priorityList, null, '\t'), 'Output device priority');
@@ -59,7 +59,7 @@ addButton({
 			const bFile = _isFile(devicesFile);
 			if (bFile) {
 				const newDevices = JSON.parse(fb.GetOutputDevices()); // Reformat with tabs
-				options = _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8'));
+				options = _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8);
 				if (options) {
 					newDevices.forEach((newDev) => {
 						if (!options.some((oldDev) => {return oldDev.device_id === newDev.device_id || oldDev.name === newDev.name;})) {
@@ -89,9 +89,9 @@ addButton({
 		menu.newCheckMenu(void(0), 'Force on startup', void(0), () => {return this.buttonsProperties['bStartup'][1];});
 		menu.newEntry({entryText: 'sep'})
 		const subMenuName = [];
-		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', convertCharsetToCodepage('UTF-8')) : JSON.parse(fb.GetOutputDevices());
+		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8) : JSON.parse(fb.GetOutputDevices());
 		const optionsName = [];
-		const file = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', convertCharsetToCodepage('UTF-8')) : null;
+		const file = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) : null;
 		const priorityList = file ? file : [...Array(size)].map(() => {return {name: null, device_id: null};});
 		range(1, size, 1).forEach((idx) => {
 			subMenuName.push(menu.newMenu('Set Device ' + idx));
@@ -140,7 +140,7 @@ repeatFn(() => {
 function outputDevicePriority() { 
 	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
 	if (!buttonsBar.buttons.devicePriority.buttonsProperties.bEnabled[1]) {return;}
-	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', convertCharsetToCodepage('UTF-8')) || [] : [];
+	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) || [] : [];
 	if (!priorityList.length) {return;}
 	const devices =  JSON.parse(fb.GetOutputDevices());
 	let bDone = false;
