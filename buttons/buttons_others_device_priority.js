@@ -13,10 +13,11 @@ include('..\\helpers\\helpers_xxx_file.js');
 include('..\\helpers\\menu_xxx.js');
 var prefix = 'dp_';
 
-try {
-	window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});
-	checkCompatible('1.6.1');
-} catch (e) {console.log('Output device priority Button loaded.');} //May be loaded along other buttons
+try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});} 
+catch (e) {console.log('Output device priority Button loaded.');} //May be loaded along other buttons
+
+checkCompatible('1.6.1', 'smp');
+checkCompatible('1.4.0', 'fb');
 
 prefix = getUniquePrefix(prefix, ''); // Puts new ID before '_'
 var newButtonsProperties = { //You can simply add new properties here
