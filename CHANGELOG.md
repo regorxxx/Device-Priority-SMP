@@ -2,7 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
-- [1.2.4](#124---2022-06-25)
+- [1.2.4](#124---2022-08-05)
 - [1.2.3](#123---2022-05-23)
 - [1.2.2](#122---2022-05-04)
 - [1.2.1](#121---2022-04-13)
@@ -15,21 +15,21 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+### Removed
+### Fixed
+
+## [1.2.4] - 2022-08-05
+### Added
+### Changed
 - UI: themed buttons are replaced with manually drawn buttons when the first method fails (on Wine for ex.). Console will output: "window.CreateThemeManager('Button') failed, using experimental buttons" in such case.
 - Readmes: rewritten readmes to avoid line wrapping wen showing them within popup for a cleaner presentation.
 - Helpers: temp files are now written at 'js_data\temp' instead of 'js_data'.
 - Helpers: updated helpers.
-### Removed
-### Fixed
-- UI: crash due to themed buttons not being available on wine.
-
-## [1.2.4] - 2022-06-05
-### Added
-### Changed
 - UI: enforced SMP version checking via popups.
 - Helpers: updated helpers.
 ### Removed
 ### Fixed
+- UI: crash due to themed buttons not being available on wine.
 
 ## [1.2.3] - 2022-05-23
 ### Added
