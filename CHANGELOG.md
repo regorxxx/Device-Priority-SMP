@@ -17,6 +17,7 @@
 ### Changed
 ### Removed
 ### Fixed
+- Buttons: crash when trying to move a button when only a single but
 
 ## [1.2.4] - 2022-08-05
 ### Added
