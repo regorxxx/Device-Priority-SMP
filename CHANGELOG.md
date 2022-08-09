@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.2.5](#125---2022-08-09)
 - [1.2.4](#124---2022-08-05)
 - [1.2.3](#123---2022-05-23)
 - [1.2.2](#122---2022-05-04)
@@ -17,7 +18,14 @@
 ### Changed
 ### Removed
 ### Fixed
-- Buttons: crash when trying to move a button when only a single but
+
+## [1.2.5] - 2022-08-09
+### Added
+### Changed
+- Helpers: updated helpers.
+### Removed
+### Fixed
+- Buttons: crash when trying to move a button when only a single button script was loaded on the panel.
 
 ## [1.2.4] - 2022-08-05
 ### Added
@@ -109,7 +117,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.4...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.5...HEAD
+[1.2.5]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.1...v1.2.2
