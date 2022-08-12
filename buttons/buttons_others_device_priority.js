@@ -1,5 +1,5 @@
 ﻿'use strict';
-//01/07/22
+//12/08/22
 
 /* 
 	Output device priority
@@ -13,8 +13,7 @@ include('..\\helpers\\helpers_xxx_file.js');
 include('..\\helpers\\menu_xxx.js');
 var prefix = 'dp_';
 
-try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});} 
-catch (e) {console.log('Output device priority Button loaded.');} //May be loaded along other buttons
+try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
 
 checkCompatible('1.6.1', 'smp');
 checkCompatible('1.4.0', 'fb');
@@ -43,7 +42,7 @@ if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility pur
 }
 
 addButton({
-	devicePriority: new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function () {
+	'Output device priority': new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function () {
 		const size = 5;
 		const menu = new _menu();
 		menu.newEntry({entryText: 'Device priority:', func: null, flags: MF_GRAYED});
@@ -129,7 +128,7 @@ addButton({
 });
 
 // Default state
-buttonsBar.buttons.devicePriority.active = buttonsBar.buttons.devicePriority.buttonsProperties.bEnabled[1];
+buttonsBar.buttons['Output device priority'].active = buttonsBar.buttons['Output device priority'].buttonsProperties.bEnabled[1];
 
 // Helpers
 let referenceDevices = fb.GetOutputDevices();
@@ -140,7 +139,7 @@ repeatFn(() => {
 
 function outputDevicePriority() { 
 	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
-	if (!buttonsBar.buttons.devicePriority.buttonsProperties.bEnabled[1]) {return;}
+	if (!buttonsBar.buttons['Output device priority'].buttonsProperties.bEnabled[1]) {return;}
 	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) || [] : [];
 	if (!priorityList.length) {return;}
 	const devices =  JSON.parse(fb.GetOutputDevices());
