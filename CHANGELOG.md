@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.3.0](#130---2022-08-12)
 - [1.2.5](#125---2022-08-09)
 - [1.2.4](#124---2022-08-05)
 - [1.2.3](#123---2022-05-23)
@@ -16,8 +17,15 @@
 ## [Unreleased][]
 ### Added
 ### Changed
-- Helpers: updated helpers.
+### Removed
+### Fixed
+
+## [1.3.0] - 2022-08-12
+### Added
+### Changed
 - Logging: reworked console logging to group buttons loading info into one line.
+- Helpers: updated helpers.
+- Helpers: switched all callbacks to [event listeners](https://github.com/regorxxx/Callbacks-Framework-SMP).
 ### Removed
 ### Fixed
 - Workaround for some instances where the scripts would warn about some feature not being supported by the OS (due to an OS or SMP bug).
@@ -120,7 +128,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.5...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.5...v1.3.0
 [1.2.5]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.2...v1.2.3
