@@ -11,9 +11,10 @@ include('..\\helpers\\buttons_xxx.js');
 include('..\\helpers\\helpers_xxx.js');
 include('..\\helpers\\helpers_xxx_file.js');
 include('..\\helpers\\menu_xxx.js');
+include('..\\helpers\\callbacks_xxx.js');
 var prefix = 'dp_';
 
-try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.1.0'});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
+try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.3.0'});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
 
 checkCompatible('1.6.1', 'smp');
 checkCompatible('1.4.0', 'fb');
@@ -158,13 +159,8 @@ function outputDevicePriority() {
 	});
 	if (!bDone) {console.log('Output device priority: No devices matched the priority list.');}
 }
-if (typeof on_output_device_changed !== 'undefined') {
-	const oldFunc = on_output_device_changed;
-	on_output_device_changed = function() {
-		oldFunc();
-		outputDevicePriority();
-	}
-} else {var on_output_device_changed = outputDevicePriority;}
 
+// Callback
+addEventListener('on_output_device_changed', outputDevicePriority);
 // Startup
 if (buttonsBar.list[buttonsBar.list.length - 1]['bStartup'][1]) {outputDevicePriority();}
