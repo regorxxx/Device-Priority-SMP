@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.3.1](#131---2022-08-21)
 - [1.3.0](#130---2022-08-12)
 - [1.2.5](#125---2022-08-09)
 - [1.2.4](#124---2022-08-05)
@@ -15,6 +16,14 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
+### Added
+### Changed
+- Helpers: updated helpers.
+### Removed
+### Fixed
+- Logging: fixed console logging to file (lines were not being split properly).
+
+## [1.3.1] - 2022-08-21
 ### Added
 ### Changed
 - Helpers: updated helpers.
@@ -130,7 +139,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.5...v1.3.0
 [1.2.5]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.3...v1.2.4
