@@ -1,5 +1,5 @@
 ﻿'use strict';
-//12/08/22
+//30/09/22
 
 /* 
 	Output device priority
@@ -21,12 +21,9 @@ checkCompatible('1.4.0', 'fb');
 
 prefix = getUniquePrefix(prefix, ''); // Puts new ID before '_'
 var newButtonsProperties = { //You can simply add new properties here
-	bStartup:	['Force device at startup?', true],
-	bEnabled:	['Auto-device enabled?', true]
+	bStartup:	['Force device at startup?', true, {func: isBoolean}, true],
+	bEnabled:	['Auto-device enabled?', true, {func: isBoolean}, true]
 };
-newButtonsProperties['bStartup'].push({func: isBoolean}, newButtonsProperties['bStartup'][1]);
-newButtonsProperties['bEnabled'].push({func: isBoolean}, newButtonsProperties['bEnabled'][1]);
-
 setProperties(newButtonsProperties, prefix, 0); //This sets all the panel properties at once
 newButtonsProperties = getPropertiesPairs(newButtonsProperties, prefix, 0);
 buttonsBar.list.push(newButtonsProperties);
