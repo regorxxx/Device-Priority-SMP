@@ -1,5 +1,5 @@
 ﻿'use strict';
-//30/09/22
+//26/10/22
 
 /* 
 	Output device priority
@@ -14,7 +14,7 @@ include('..\\helpers\\menu_xxx.js');
 include('..\\helpers\\callbacks_xxx.js');
 var prefix = 'dp_';
 
-try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.3.0'});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
+try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.5.0'});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
 
 checkCompatible('1.6.1', 'smp');
 checkCompatible('1.4.0', 'fb');
@@ -129,18 +129,14 @@ addButton({
 buttonsBar.buttons['Output device priority'].active = buttonsBar.buttons['Output device priority'].buttonsProperties.bEnabled[1];
 
 // Helpers
-let referenceDevices = fb.GetOutputDevices();
-repeatFn(() => {
-	const newDevices = fb.GetOutputDevices();
-	if (newDevices !== referenceDevices) {referenceDevices = newDevices; outputDevicePriority();}
-}, 600)();
-
+const devicePriority = {nowPlaying: {time: -1, plsIdx: -1, itemIdx: -1, handle: null}, bOmitCallback: false, referenceDevices: fb.GetOutputDevices()};
 function outputDevicePriority() { 
 	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
 	if (!buttonsBar.buttons['Output device priority'].buttonsProperties.bEnabled[1]) {return;}
 	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) || [] : [];
 	if (!priorityList.length) {return;}
-	const devices =  JSON.parse(fb.GetOutputDevices());
+	devicePriority.referenceDevices = fb.GetOutputDevices();
+	const devices =  JSON.parse(devicePriority.referenceDevices);
 	let bDone = false;
 	priorityList.forEach( (device) => {
 		if (typeof device !== 'object' || !device.hasOwnProperty('name')) {return;}
@@ -148,16 +144,70 @@ function outputDevicePriority() {
 		const idx = devices.findIndex((dev) => {return dev.name === device.name || dev.device_id === device.device_id;});
 		if (idx !== -1) {
 			if (devices[idx].active) {bDone = true; return;}
+			devicePriority.bOmitCallback = true;
 			fb.SetOutputDevice(devices[idx].output_id, devices[idx].device_id); 
 			console.log('Auto-Switch output device to: ', device.name, device.device_id);
 			if (fb.IsPaused) {fb.PlayOrPause();} // Workaround for Bluetooth devices pausing on power off
+			// Try to fix playback
+			[50, 100, 150, 200, 250, 300].forEach((ms, i) => {setTimeout(fixNowPlaying, ms, i + 1);});
 			bDone = true;
 		}
 	});
 	if (!bDone) {console.log('Output device priority: No devices matched the priority list.');}
 }
 
+function cacheNowPlaying() {
+	if (fb.IsPlaying) {
+		const playingItem = plman.GetPlayingItemLocation();
+		devicePriority.nowPlaying.time = -1;
+		devicePriority.nowPlaying.plsIdx = -1;
+		devicePriority.nowPlaying.itemIdx = -1;
+		devicePriority.nowPlaying.handle = fb.GetNowPlaying();
+		if (devicePriority.nowPlaying.handle && playingItem.IsValid) {
+			devicePriority.nowPlaying.plsIdx = playingItem.PlaylistIndex;
+			devicePriority.nowPlaying.itemIdx = playingItem.PlaylistItemIndex;
+			devicePriority.nowPlaying.time = fb.PlaybackTime
+		}
+	}
+}
+
+function fixNowPlaying(i) {
+	// Workaround for Bluetooth devices pausing on power off
+	if (fb.IsPaused) {fb.PlayOrPause();}
+	// It was playing and something went wrong (like device not available)
+	if ((!fb.IsPlaying || fb.PlaybackTime < devicePriority.nowPlaying.time) && devicePriority.nowPlaying.handle !== null) {
+		if (devicePriority.nowPlaying.plsIdx !== -1 && devicePriority.nowPlaying.plsIdx < plman.PlaylistCount) {
+			const cache = {plsIdx: plman.ActivePlayist, itemIdx: plman.GetPlaylistFocusItemIndex(plman.ActivePlayist)};
+			let bChanged = false;
+			if (devicePriority.nowPlaying.plsIdx !== plman.ActivePlayist) {
+				plman.ActivePlayist = devicePriority.nowPlaying.plsIdx;
+				plman.SetPlaylistFocusItem(devicePriority.nowPlaying.plsIdx, devicePriority.nowPlaying.itemIdx);
+				bChanged = true;
+			} else if (cache.itemIdx !== devicePriority.nowPlaying.itemIdx) {
+				plman.SetPlaylistFocusItem(devicePriority.nowPlaying.plsIdx, devicePriority.nowPlaying.itemIdx);
+				bChanged = true;
+			}
+			fb.PlaybackTime = devicePriority.nowPlaying.time;
+			if (!fb.IsPlaying) {fb.Play();}
+			if (bChanged) {
+				plman.ActivePlayist = cache.plsIdx;
+				plman.SetPlaylistFocusItem(cache.plsIdx, cache.itemIdx);
+			}
+			console.log('Output device priority: fixed playback at ' + i + ' retry.')
+		}
+	}
+}
+
 // Callback
-addEventListener('on_output_device_changed', outputDevicePriority);
+addEventListener('on_output_device_changed', () => {
+	if (devicePriority.bOmitCallback) {devicePriority.bOmitCallback = false; return;}
+	cacheNowPlaying();
+	outputDevicePriority();
+});
 // Startup
 if (buttonsBar.list[buttonsBar.list.length - 1]['bStartup'][1]) {outputDevicePriority();}
+// Listen to new devices connection
+repeatFn(() => {
+	const newDevices = fb.GetOutputDevices();
+	if (newDevices !== devicePriority.referenceDevices) {cacheNowPlaying(); outputDevicePriority();}
+}, 600)();

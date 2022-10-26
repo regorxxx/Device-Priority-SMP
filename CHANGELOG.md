@@ -19,6 +19,8 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+- Workaround for some instances where the output devices throws an error and playback is stopped. Now playback is resumed again.
+- Workaround for random instances where playback changes to beginning of track after device switching (foobar bug?). Now playback is forced at cached position after device switching. Multiple retries. Both changes should produce much smoother (and faster) output device switching now.
 - Helpers: updated helpers.
 ### Removed
 ### Fixed
