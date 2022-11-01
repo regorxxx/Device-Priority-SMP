@@ -18,9 +18,11 @@
 
 ## [Unreleased][]
 ### Added
+- Volume: new option to set default volume per device. Switching between devices will adjust volume to this setting afterwards.
 ### Changed
-- Workaround for some instances where the output devices throws an error and playback is stopped. Now playback is resumed again.
-- Workaround for random instances where playback changes to beginning of track after device switching (foobar bug?). Now playback is forced at cached position after device switching. Multiple retries. Both changes should produce much smoother (and faster) output device switching now.
+- Playback: workaround for some instances where the output devices throws an error and playback is stopped. Now playback is resumed again.
+- Playback: workaround for random instances where playback changes to beginning of track after device switching (foobar bug?). Now playback is forced at cached position after device switching. Multiple retries. Both changes should produce much smoother (and faster) output device switching now.
+- Buttons: improved 'no background mode' on buttons toolbar, with colors and shades adapted to the toolbar background color and following the design of native Foobar2000 buttons for a seamless integration.
 - Helpers: updated helpers.
 ### Removed
 ### Fixed
