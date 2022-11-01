@@ -1,5 +1,5 @@
 ﻿'use strict';
-//26/10/22
+//01/10/22
 
 /* 
 	Output device priority
@@ -22,7 +22,8 @@ checkCompatible('1.4.0', 'fb');
 prefix = getUniquePrefix(prefix, ''); // Puts new ID before '_'
 var newButtonsProperties = { //You can simply add new properties here
 	bStartup:	['Force device at startup?', true, {func: isBoolean}, true],
-	bEnabled:	['Auto-device enabled?', true, {func: isBoolean}, true]
+	bEnabled:	['Auto-device enabled?', true, {func: isBoolean}, true],
+	refreshRate:['Check devices every X ms (0 to disable)', 600, {func: isInt, range: [[0, 0], [50, Infinity]]}, 600],
 };
 setProperties(newButtonsProperties, prefix, 0); //This sets all the panel properties at once
 newButtonsProperties = getPropertiesPairs(newButtonsProperties, prefix, 0);
@@ -31,20 +32,11 @@ buttonsBar.list.push(newButtonsProperties);
 const devicesFile = folders.data + 'devices.json';
 const devicesPriorityFile = folders.data + 'devices_priority.json';
 
-if (_isFile(devicesPriorityFile)) { // TODO: Remove later, for compatibility purpose with old versions
-	const priorityList = _jsonParseFileCheck(devicesPriorityFile, 'Devices priority', 'Output device priority', utf8);
-	if (priorityList && priorityList.some((device) => {return typeof device !== 'object' || !device.hasOwnProperty('name');})) {
-		_deleteFile(devicesPriorityFile);
-		fb.ShowPopupMessage('Old devices priority file has been deleted:\n' + devicesPriorityFile + '\nNew script version uses another format {name, device_id}, please recreate it if needed.\n\n' + JSON.stringify(priorityList, null, '\t'), 'Output device priority');
-	}
-}
-
 addButton({
 	'Output device priority': new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function () {
 		const size = 5;
 		const menu = new _menu();
 		menu.newEntry({entryText: 'Device priority:', func: null, flags: MF_GRAYED});
-		menu.newCheckMenu(void(0), 'Enable Auto-Device?', void(0), () => {return this.buttonsProperties['bEnabled'][1];});
 		menu.newEntry({entryText: 'sep'});
 		menu.newEntry({entryText: 'Export device list' + (_isFile(devicesFile) ?  '\t(overwrite)' : '\t(new)'), func: () => {
 			fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nExport first the device list with all the desired devices connected to use them at a later point (even if the devices are not connected).\n\n\'Set Device X\' menus will only show either currently connected devices or the ones from the exported list.\n\nIn other words, you can only assign devices to the priority list if they are available on the menus. A disconnected device, not available on the exported list, will be shown as \'Not connected device\', with its name at top. Functionality will be the same (for auto-switching purposes) but it will not be on the list of available devices, nor clickable (so you will not be able to set it to another position unless you connect it first).', 'Output device priority');
@@ -76,15 +68,23 @@ addButton({
 		}
 		menu.newEntry({entryText: 'sep'})
 		menu.newEntry({entryText: 'Enable Auto-Device?', func: () => {
-			this.buttonsProperties['bEnabled'][1] = !this.buttonsProperties['bEnabled'][1];
+			this.buttonsProperties.bEnabled[1] = !this.buttonsProperties.bEnabled[1];
 			overwriteProperties(this.buttonsProperties);
 			this.switchActive();
+			if (this.buttonsProperties.bEnabled[1]) {
+				if (devicePriority.refreshRate !== 0) {devicePriority.refreshFuncId = devicePriority.refreshFunc();}
+				addEventListener('on_output_device_changed', devicePriority.callbackFunc);
+			} else {
+				if (devicePriority.refreshRate !== 0) {clearInterval(devicePriority.refreshFuncId);}
+				removeEventListener('on_output_device_changed', devicePriority.callbackFunc);
+			}
 		}});
+		menu.newCheckMenu(void(0), 'Enable Auto-Device?', void(0), () => {return this.buttonsProperties.bEnabled[1];});
 		menu.newEntry({entryText: 'Force on startup', func: () => {
-			this.buttonsProperties['bStartup'][1] = !this.buttonsProperties['bStartup'][1];
+			this.buttonsProperties.bStartup[1] = !this.buttonsProperties.bStartup[1];
 			overwriteProperties(this.buttonsProperties);
 		}});
-		menu.newCheckMenu(void(0), 'Force on startup', void(0), () => {return this.buttonsProperties['bStartup'][1];});
+		menu.newCheckMenu(void(0), 'Force on startup', void(0), () => {return this.buttonsProperties.bStartup[1];});
 		menu.newEntry({entryText: 'sep'})
 		const subMenuName = [];
 		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8) : JSON.parse(fb.GetOutputDevices());
@@ -94,32 +94,52 @@ addButton({
 		range(1, size, 1).forEach((idx) => {
 			subMenuName.push(menu.newMenu('Set Device ' + idx));
 			const currMenu = subMenuName[idx - 1];
-			const currDev = priorityList[idx - 1].hasOwnProperty('name') ? priorityList[idx - 1].name : null;
+			const currEntry = priorityList[idx - 1];
+			const currDev = currEntry.hasOwnProperty('name') ? currEntry.name : null;
 			const currDevR = currDev ? currDev.replace('DS :', '').replace('ASIO :', '') : '';
-			menu.newEntry({menuName: currMenu, entryText: 'Current device: ' + (currDev ? (currDevR.length > 20 ? currDevR.substring(0,20) + ' ...' : currDevR) : '-') , func: null, flags: MF_GRAYED});
-			menu.newEntry({menuName: currMenu, entryText: 'sep'});
-			[{name: 'None'}, {name: 'Not connected device'}, {name: 'sep'}, ...options].forEach( (entry, index) => {
-				// Create names for all entries
-				if (entry.name === 'sep') {
-					menu.newEntry({menuName: currMenu, entryText: 'sep'});
-					optionsName.push(entry.name);
-				}
-				else {
-					let deviceName = entry.name;
-					deviceName = deviceName.length > 40 ? deviceName.substring(0,40) + ' ...' : deviceName;
-					// Entries
-					optionsName.push(deviceName);
-					menu.newEntry({menuName: currMenu, entryText: deviceName, func: () => {
-						priorityList[idx - 1] = entry.name !== 'None' ? {name: entry.name, device_id: entry.device_id} : {name: null, device_id: null};
-						if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t'))) {console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')');}
-					}, flags: index === 1 ? MF_GRAYED : MF_ENABLED});
-				}
-			});
-			menu.newCheckMenu(currMenu, optionsName[0], optionsName[optionsName.length - 1],  () => {
-				const currOption = priorityList[idx - 1].hasOwnProperty('name') ? priorityList[idx - 1].name : null;
-				const id = currOption && currOption.length ? options.findIndex((item) => {return item.name === currOption}) : 0;
-				return (id !== -1 ? (id !== 0 ? id + 2 : 0) : 1);
-			});
+			{	// Header
+				menu.newEntry({menuName: currMenu, entryText: 'Current device: ' + (currDev ? (currDevR.length > 20 ? currDevR.substring(0,20) + ' ...' : currDevR) : '-') , func: null, flags: MF_GRAYED});
+				menu.newEntry({menuName: currMenu, entryText: 'sep'});
+			}
+			{	// Volume
+				const currVol = currDev && currEntry.hasOwnProperty('volume') ? currEntry.volume : null;
+				menu.newEntry({menuName: currMenu, entryText: 'Set default volume' + '\t' + _b(currVol !== null ? 100 + currVol : 'default') , func: () => {
+					let input;
+					try {
+						input = utils.InputBox(window.ID, 'Input volume value (from 0 to 100):\n(Empty to not change volume)', 'Output device priority', currVol !== null ? 100 + currVol : '', true);
+						if (input === '') {input = null;}
+						if (input !== null) {input = -100 + Math.abs(Number(input));}
+					} catch(e) {return;}
+					if (input === currVol) {return;}
+					priorityList[idx - 1].volume = input;
+					if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t'))) {console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')');}
+				}, flags: currDev ? MF_ENABLED : MF_GRAYED});
+				menu.newEntry({menuName: currMenu, entryText: 'sep'});
+			}
+			{	// Device list
+				[{name: 'None'}, {name: 'Not connected device'}, {name: 'sep'}, ...options].forEach( (entry, index) => {
+					// Create names for all entries
+					if (entry.name === 'sep') {
+						menu.newEntry({menuName: currMenu, entryText: 'sep'});
+						optionsName.push(entry.name);
+					}
+					else {
+						let deviceName = entry.name;
+						deviceName = deviceName.length > 40 ? deviceName.substring(0,40) + ' ...' : deviceName;
+						// Entries
+						optionsName.push(deviceName);
+						menu.newEntry({menuName: currMenu, entryText: deviceName, func: () => {
+							priorityList[idx - 1] = entry.name !== 'None' ? {name: entry.name, device_id: entry.device_id} : {name: null, device_id: null};
+							if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t'))) {console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')');}
+						}, flags: index === 1 ? MF_GRAYED : MF_ENABLED});
+					}
+				});
+				menu.newCheckMenu(currMenu, optionsName[0], optionsName[optionsName.length - 1],  () => {
+					const currOption = currEntry.hasOwnProperty('name') ? currEntry.name : null;
+					const id = currOption && currOption.length ? options.findIndex((item) => {return item.name === currOption}) : 0;
+					return (id !== -1 ? (id !== 0 ? id + 2 : 0) : 1);
+				});
+			}
 		});
 		menu.btn_up(this.currX, this.currY + this.currH);
 	}, null, void(0), () => {return 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!';}, prefix, newButtonsProperties, chars.headphones),
@@ -127,12 +147,28 @@ addButton({
 
 // Default state
 buttonsBar.buttons['Output device priority'].active = buttonsBar.buttons['Output device priority'].buttonsProperties.bEnabled[1];
-
 // Helpers
-const devicePriority = {nowPlaying: {time: -1, plsIdx: -1, itemIdx: -1, handle: null}, bOmitCallback: false, referenceDevices: fb.GetOutputDevices()};
+const devicePriority = {
+	nowPlaying: {time: -1, plsIdx: -1, itemIdx: -1, handle: null}, 
+	bOmitCallback: false, 
+	referenceDevices: fb.GetOutputDevices(),
+	refreshRate: buttonsBar.buttons['Output device priority'].buttonsProperties.refreshRate[1],
+	refreshFunc: repeatFn(() => {
+			const newDevices = fb.GetOutputDevices();
+			if (newDevices !== devicePriority.referenceDevices) {cacheNowPlaying(); outputDevicePriority();}
+	}, buttonsBar.buttons['Output device priority'].buttonsProperties.refreshRate[1]),
+	refreshFuncId: null,
+	callbackFunc: () => {
+		if (!devicePriority.properties.bEnabled[1]) {removeEventListenerSelf();}
+		if (devicePriority.bOmitCallback) {devicePriority.bOmitCallback = false; return;}
+		cacheNowPlaying();
+		outputDevicePriority();
+	},
+	properties: buttonsBar.buttons['Output device priority'].buttonsProperties,
+};
 function outputDevicePriority() { 
 	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
-	if (!buttonsBar.buttons['Output device priority'].buttonsProperties.bEnabled[1]) {return;}
+	if (!devicePriority.properties.bEnabled[1]) {return;}
 	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) || [] : [];
 	if (!priorityList.length) {return;}
 	devicePriority.referenceDevices = fb.GetOutputDevices();
@@ -143,10 +179,15 @@ function outputDevicePriority() {
 		if (bDone) {return;}
 		const idx = devices.findIndex((dev) => {return dev.name === device.name || dev.device_id === device.device_id;});
 		if (idx !== -1) {
-			if (devices[idx].active) {bDone = true; return;}
+			const currDevice = devices[idx];
+			if (currDevice.active) {bDone = true; return;}
 			devicePriority.bOmitCallback = true;
-			fb.SetOutputDevice(devices[idx].output_id, devices[idx].device_id); 
+			fb.SetOutputDevice(currDevice.output_id, currDevice.device_id);
 			console.log('Auto-Switch output device to: ', device.name, device.device_id);
+			if (device.hasOwnProperty('volume') && device.volume !== null && fb.Volume !== device.volume) {
+				fb.Volume = device.volume;
+				console.log('Auto-Switch volume to: ' + (100 + fb.Volume));
+			}
 			if (fb.IsPaused) {fb.PlayOrPause();} // Workaround for Bluetooth devices pausing on power off
 			// Try to fix playback
 			[50, 100, 150, 200, 250, 300].forEach((ms, i) => {setTimeout(fixNowPlaying, ms, i + 1);});
@@ -198,16 +239,12 @@ function fixNowPlaying(i) {
 	}
 }
 
-// Callback
-addEventListener('on_output_device_changed', () => {
-	if (devicePriority.bOmitCallback) {devicePriority.bOmitCallback = false; return;}
-	cacheNowPlaying();
-	outputDevicePriority();
-});
 // Startup
-if (buttonsBar.list[buttonsBar.list.length - 1]['bStartup'][1]) {outputDevicePriority();}
-// Listen to new devices connection
-repeatFn(() => {
-	const newDevices = fb.GetOutputDevices();
-	if (newDevices !== devicePriority.referenceDevices) {cacheNowPlaying(); outputDevicePriority();}
-}, 600)();
+if (devicePriority.properties.bEnabled[1]) {
+	// Add callback
+	addEventListener('on_output_device_changed', devicePriority.callbackFunc);
+	// Check device on startup
+	if (devicePriority.properties.bStartup[1]) {outputDevicePriority();}
+	// Listen to new devices connection
+	if (devicePriority.refreshRate !== 0) {devicePriority.refreshFuncId = devicePriority.refreshFunc();}
+}
