@@ -22,7 +22,8 @@
 ### Changed
 - Playback: workaround for some instances where the output devices throws an error and playback is stopped. Now playback is resumed again.
 - Playback: workaround for random instances where playback changes to beginning of track after device switching (foobar bug?). Now playback is forced at cached position after device switching. Multiple retries. Both changes should produce much smoother (and faster) output device switching now.
-- Buttons: improved 'no background mode' on buttons toolbar, with colors and shades adapted to the toolbar background color and following the design of native Foobar2000 buttons for a seamless integration.
+- Buttons: improved 'no background mode' on buttons toolbar with colors and shades adapted to the toolbar background color and following the design of native Foobar2000 buttons for a seamless integration.
+- Buttons: improved 'no background mode' on buttons toolbar with proper animations (no longer a bad looking rectangle gradient).
 - Helpers: updated helpers.
 ### Removed
 ### Fixed
