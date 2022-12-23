@@ -1,5 +1,5 @@
 ﻿'use strict';
-//01/10/22
+//22/10/22
 
 /* 
 	Output device priority
@@ -14,7 +14,7 @@ include('..\\helpers\\menu_xxx.js');
 include('..\\helpers\\callbacks_xxx.js');
 var prefix = 'dp_';
 
-try {window.DefinePanel('Output device priority button', {author:'XXX', version: '1.5.0'});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
+try {window.DefineScript('Output device priority button', {author:'XXX', version: '1.5.0', features: {drag_n_drop: false}});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
 
 checkCompatible('1.6.1', 'smp');
 checkCompatible('1.4.0', 'fb');
