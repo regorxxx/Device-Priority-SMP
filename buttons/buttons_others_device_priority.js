@@ -1,5 +1,5 @@
 ﻿'use strict';
-//22/10/22
+//06/01/23
 
 /* 
 	Output device priority
@@ -162,17 +162,28 @@ const devicePriority = {
 		if (!devicePriority.properties.bEnabled[1]) {removeEventListenerSelf();}
 		if (devicePriority.bOmitCallback) {devicePriority.bOmitCallback = false; return;}
 		cacheNowPlaying();
+		devicePriority.manualDevice = null;
 		outputDevicePriority();
 	},
 	properties: buttonsBar.buttons['Output device priority'].buttonsProperties,
+	manualDevice: null
 };
 function outputDevicePriority() { 
-	if (utils.IsKeyPressed(VK_SHIFT)) {return;}
 	if (!devicePriority.properties.bEnabled[1]) {return;}
+	if (utils.IsKeyPressed(VK_SHIFT)) {
+		const newDevices = JSON.parse(fb.GetOutputDevices());
+		const manualDevice = newDevices.find((dev) => {return dev.active;});
+		if (manualDevice) {devicePriority.manualDevice = manualDevice.name;}
+		return;
+	} else if (devicePriority.manualDevice !== null) {
+		const oldIds = new Set(JSON.parse(devicePriority.referenceDevices).map((dev) => dev.device_id));
+		const newIds = new Set(JSON.parse(fb.GetOutputDevices()).map((dev) => dev.device_id));
+		if (oldIds.isEqual(newIds)) {return;}
+	}
 	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) || [] : [];
 	if (!priorityList.length) {return;}
 	devicePriority.referenceDevices = fb.GetOutputDevices();
-	const devices =  JSON.parse(devicePriority.referenceDevices);
+	const devices = JSON.parse(devicePriority.referenceDevices);
 	let bDone = false;
 	priorityList.forEach( (device) => {
 		if (typeof device !== 'object' || !device.hasOwnProperty('name')) {return;}
