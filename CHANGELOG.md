@@ -29,6 +29,7 @@
 - Helpers: updated helpers.
 ### Removed
 ### Fixed
+- UI: don't show tooltip during buttons drag n drop.
 
 ## [1.4.0] - 2022-08-22
 ### Added
