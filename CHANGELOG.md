@@ -19,6 +19,7 @@
 ## [Unreleased][]
 ### Added
 - Volume: new option to set default volume per device. Switching between devices will adjust volume to this setting afterwards.
+- UI: added icons-only mode for toolbar buttons at the toolbar configuration menu ('Other UI configuration'). Tooltip is adjusted to show the button's name there instead. Handy when creating a compact toolbar and icons are good enough to recognize the tools.
 ### Changed
 - Playback: workaround for some instances where the output devices throws an error and playback is stopped. Now playback is resumed again.
 - Playback: workaround for random instances where playback changes to beginning of track after device switching (foobar bug?). Now playback is forced at cached position after device switching. Multiple retries. Both changes should produce much smoother (and faster) output device switching now.
@@ -30,6 +31,7 @@
 ### Removed
 ### Fixed
 - UI: don't show tooltip during buttons drag n drop.
+- UI: background color mismatch when resizing windows and using custom background colors.
 
 ## [1.4.0] - 2022-08-22
 ### Added
