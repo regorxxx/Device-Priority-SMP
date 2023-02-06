@@ -27,6 +27,7 @@
 - Buttons: the buttons bar now shows a message when no buttons have been added, left clicking shows a popup with available buttons presets. Right clicking opens the menu to configure the toolbar or add buttons manually.
 - Buttons: improved 'no background mode' on buttons toolbar with colors and shades adapted to the toolbar background color and following the design of native Foobar2000 buttons for a seamless integration.
 - Buttons: improved 'no background mode' on buttons toolbar with proper animations (no longer a bad looking rectangle gradient).
+- UI: unified tooltip structure and available info on all buttons (short description + relevant settings + keyboard modifiers).
 - Helpers: updated helpers.
 ### Removed
 ### Fixed

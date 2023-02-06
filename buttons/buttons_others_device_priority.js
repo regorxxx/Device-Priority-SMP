@@ -1,5 +1,5 @@
 ﻿'use strict';
-//06/01/23
+//06/02/23
 
 /* 
 	Output device priority
@@ -142,7 +142,17 @@ addButton({
 			}
 		});
 		menu.btn_up(this.currX, this.currY + this.currH);
-	}, null, void(0), () => {return 'Set output device priority for auto-switching.\nTo bypass auto-switch SHIFT must be pressed!';}, prefix, newButtonsProperties, chars.headphones),
+	}, null, void(0), () => {
+		let info = 'Set output device priority for auto-switching.'
+		// Modifiers
+		const bShift = utils.IsKeyPressed(VK_SHIFT);
+		const bInfo = typeof menu_panelProperties === 'undefined' || menu_panelProperties.bTooltipInfo[1];
+		if (bShift || bInfo) {
+			info += '\n-----------------------------------------------------';
+			info += '\n(Shift to bypass auto-switch on device change)';
+		}
+		return info;
+	}, prefix, newButtonsProperties, chars.headphones),
 });
 
 // Default state
