@@ -1,5 +1,5 @@
 ﻿'use strict';
-//06/02/23
+//08/02/23
 
 /* 
 	Output device priority
@@ -24,6 +24,7 @@ var newButtonsProperties = { //You can simply add new properties here
 	bStartup:	['Force device at startup?', true, {func: isBoolean}, true],
 	bEnabled:	['Auto-device enabled?', true, {func: isBoolean}, true],
 	refreshRate:['Check devices every X ms (0 to disable)', 600, {func: isInt, range: [[0, 0], [50, Infinity]]}, 600],
+	bIconMode:	['Icon-only mode?', false, {func: isBoolean}, false]
 };
 setProperties(newButtonsProperties, prefix, 0); //This sets all the panel properties at once
 newButtonsProperties = getPropertiesPairs(newButtonsProperties, prefix, 0);
