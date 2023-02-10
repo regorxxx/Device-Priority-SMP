@@ -28,11 +28,15 @@
 - Buttons: improved 'no background mode' on buttons toolbar with colors and shades adapted to the toolbar background color and following the design of native Foobar2000 buttons for a seamless integration.
 - Buttons: improved 'no background mode' on buttons toolbar with proper animations (no longer a bad looking rectangle gradient).
 - UI: unified tooltip structure and available info on all buttons (short description + relevant settings + keyboard modifiers).
+- UI: unified buttons size normalization settings and behavior for all axis modes. 
+- UI: unified button icon alignment on reflow modes.
 - Helpers: updated helpers.
 ### Removed
 ### Fixed
 - UI: don't show tooltip during buttons drag n drop.
 - UI: background color mismatch when resizing windows and using custom background colors.
+- UI: fixed reflow mode in some cases when resizing back to the required width/height to show all buttons on a single row/column.
+- UI: fixed reflow mode in some cases when normalization mode was not active and buttons had different size; non needed empty space was added in some rows/columns.
 
 ## [1.4.0] - 2022-08-22
 ### Added
