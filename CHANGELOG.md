@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.5.0](#150---2023-02-15)
 - [1.4.0](#140---2022-08-22)
 - [1.3.1](#131---2022-08-21)
 - [1.3.0](#130---2022-08-12)
@@ -17,6 +18,12 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.5.0] - 2023-02-15
 ### Added
 - Volume: new option to set default volume per device. Switching between devices will adjust volume to this setting afterwards.
 - UI: added icons-only mode for toolbar buttons at the toolbar configuration menu ('Other UI configuration'). Tooltip is adjusted to show the button's name there instead. Handy when creating a compact toolbar and icons are good enough to recognize the tools.
@@ -161,7 +168,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.2.5...v1.3.0
