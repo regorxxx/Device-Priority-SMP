@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.5.1](#150---2023-02-19)
 - [1.5.0](#150---2023-02-15)
 - [1.4.0](#140---2022-08-22)
 - [1.3.1](#131---2022-08-21)
@@ -18,15 +19,23 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
-## [Unreleased][]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.5.1] - 2023-02-19
 ### Added
 - UI: added settings for buttons color (the border and filling).
 - UI: added settings for buttons transparency (the filling).
 ### Changed
 - UI: enhanced colors and shading for buttons on mouse over/down when using custom toolbar color modes, etc.
 - UI: pressing Ctrl resets selected setting on buttons bar colors submenu.
+- Helpers: updated helpers
 ### Removed
 ### Fixed
+- Buttons: fixed 'Restore default buttons' entry crash (not needed anymore since there are no more 'default buttons'), now replaced with 'Restore all buttons' (which simply restores back default settings for every button).
+- Readmes: added missing 'Toolbar' readme.
 
 ## [1.5.0] - 2023-02-15
 ### Added
@@ -173,7 +182,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.1...HEAD
+[1.5.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.0...v1.3.1
