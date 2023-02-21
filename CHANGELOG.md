@@ -2,7 +2,8 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
-- [1.5.1](#150---2023-02-19)
+- [1.5.2](#152---2023-02-21)
+- [1.5.1](#151---2023-02-19)
 - [1.5.0](#150---2023-02-15)
 - [1.4.0](#140---2022-08-22)
 - [1.3.1](#131---2022-08-21)
@@ -23,6 +24,14 @@
 ### Changed
 ### Removed
 ### Fixed
+
+## [1.5.2] - 2023-02-21
+### Added
+### Changed
+- Helpers: updated helpers
+### Removed
+### Fixed
+- Buttons: properties were sometimes reset/mixed/not saved properly moving buttons using the 'Change buttons position' menu. It worked fine using drag n' drop though.
 
 ## [1.5.1] - 2023-02-19
 ### Added
@@ -182,7 +191,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.1...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.2...HEAD
+[1.5.2]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.3.1...v1.4.0
