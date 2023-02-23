@@ -23,8 +23,10 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+- Internal code cleanup of menus.
 ### Removed
 ### Fixed
+- Console: logging of null value not working properly (totally irrelevant except for debug purposes).
 
 ## [1.6.0] - 2023-02-22
 ### Added
