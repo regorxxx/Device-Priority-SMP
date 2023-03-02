@@ -1,5 +1,5 @@
 ﻿'use strict';
-//08/02/23
+//28/02/23
 
 /* 
 	Output device priority
@@ -34,7 +34,7 @@ const devicesFile = folders.data + 'devices.json';
 const devicesPriorityFile = folders.data + 'devices_priority.json';
 
 addButton({
-	'Output device priority': new themedButton({x: 0, y: 0, w: 98, h: 22}, 'Auto-device', function () {
+	'Output device priority': new themedButton({x: 0, y: 0, w: _gr.CalcTextWidth('Auto-device', _gdiFont(globFonts.button.name, globFonts.button.size * buttonsBar.config.scale)) + 30 * _scale(1, false) /_scale(buttonsBar.config.scale), h: 22}, 'Auto-device', function () {
 		const size = 5;
 		const menu = new _menu();
 		menu.newEntry({entryText: 'Device priority:', func: null, flags: MF_GRAYED});
