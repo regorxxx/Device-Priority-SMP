@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.7.0](#170---2023-03-04)
 - [1.6.0](#160---2023-02-22)
 - [1.5.2](#152---2023-02-21)
 - [1.5.1](#151---2023-02-19)
@@ -21,6 +22,12 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.7.0] - 2023-03-04
 ### Added
 ### Changed
 - UI: tweaked and unified buttons weight and margins, adjusted to scale set and DPI.
@@ -209,7 +216,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.0...HEAD
+[1.7.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.2...v1.6.0
 [1.5.2]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.0...v1.5.1
