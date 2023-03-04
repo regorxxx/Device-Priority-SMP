@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.7.1](#171---2023-03-04)
 - [1.7.0](#170---2023-03-04)
 - [1.6.0](#160---2023-02-22)
 - [1.5.2](#152---2023-02-21)
@@ -24,6 +25,13 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+### Removed
+### Fixed
+
+## [1.7.1] - 2023-03-04
+### Added
+### Changed
+- UI: png icons now use a dark-mode version (if available) or gets inverted according to the button text color configuration.
 ### Removed
 ### Fixed
 
@@ -216,7 +224,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.1...HEAD
+[1.7.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.0...v1.7.1
 [1.7.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.2...v1.6.0
 [1.5.2]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.1...v1.5.2
