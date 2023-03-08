@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.8.0](#180---2023-03-08)
 - [1.7.1](#171---2023-03-04)
 - [1.7.0](#170---2023-03-04)
 - [1.6.0](#160---2023-02-22)
@@ -25,6 +26,13 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+### Removed
+### Fixed
+
+## [1.8.0] - 2023-03-08
+### Added
+### Changed
+- Helpers: updated helpers
 ### Removed
 ### Fixed
 
@@ -224,7 +232,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.1...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.8.0...HEAD
+[1.8.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.1...v1.8.0
 [1.7.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.0...v1.7.1
 [1.7.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.5.2...v1.6.0
