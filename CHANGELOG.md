@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.8.1](#181---2023-03-09)
 - [1.8.0](#180---2023-03-08)
 - [1.7.1](#171---2023-03-04)
 - [1.7.0](#170---2023-03-04)
@@ -28,6 +29,13 @@
 ### Changed
 ### Removed
 ### Fixed
+
+## [1.8.1] - 2023-03-09
+### Added
+### Changed
+### Removed
+### Fixed
+- Crash when using drag n' drop if a button file was loaded (instead of using the toolbar), although this installation method is no longer supported.
 
 ## [1.8.0] - 2023-03-08
 ### Added
@@ -232,7 +240,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.8.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.8.1...HEAD
+[1.8.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.8.0...v1.8.1
 [1.8.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.1...v1.8.0
 [1.7.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.0...v1.7.1
 [1.7.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.6.0...v1.7.0
