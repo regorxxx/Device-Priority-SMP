@@ -27,6 +27,7 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+- Helpers: updated helpers.
 ### Removed
 ### Fixed
 
@@ -40,7 +41,7 @@
 ## [1.8.0] - 2023-03-08
 ### Added
 ### Changed
-- Helpers: updated helpers
+- Helpers: updated helpers.
 ### Removed
 ### Fixed
 
