@@ -30,6 +30,7 @@
 ### Changed
 ### Removed
 ### Fixed
+- UI: tooltip flickering while pressing Shift/Ctrl over a button in icon-only mode.
 
 ## [1.9.0] - 2023-05-08
 ### Added
