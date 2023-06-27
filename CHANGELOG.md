@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.9.1](#191---2023-06-27)
 - [1.9.0](#190---2023-05-08)
 - [1.8.1](#181---2023-03-09)
 - [1.8.0](#180---2023-03-08)
@@ -30,7 +31,15 @@
 ### Changed
 ### Removed
 ### Fixed
-- UI: tooltip flickering while pressing Shift/Ctrl over a button in icon-only mode.
+
+## [1.9.1] - 2023-06-27
+### Added
+### Changed
+- Helpers: updated helpers.
+- Console: menu entries are no longer logged to console after clicking.
+- Console: multiple improvements when logging to file for FbMetadbHandle, FbMetadbHandleList, Error and unknown instances (totally irrelevant except for debug purposes).
+### Removed
+### Fixed
 
 ## [1.9.0] - 2023-05-08
 ### Added
@@ -251,7 +260,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.1...HEAD
+[1.9.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.8.1...v1.9.0
 [1.8.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.8.0...v1.8.1
 [1.8.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.7.1...v1.8.0
