@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.10.0](#1100---2023-10-05)
 - [1.9.7](#197---2023-09-25)
 - [1.9.6](#196---2023-09-20)
 - [1.9.5](#195---2023-09-14)
@@ -35,6 +36,15 @@
 ## [Unreleased][]
 ### Added
 ### Changed
+### Removed
+### Fixed
+
+## [1.10.0] - 2023-10-05
+### Added
+### Changed
+- Configuration: expanded user configurable files at '[FOOBAR PROFILE FOLDER]\js_data\presets\global' with new queries. File will be automatically updated with new values (maintaining the user settings).
+- Configuration: improved the user configurable files update check for missing keys.
+- Helpers: updated helpers
 ### Removed
 ### Fixed
 
@@ -309,7 +319,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.7...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.10.0...HEAD
+[1.10.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.7...v1.10.0
 [1.9.7]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.6...v1.9.7
 [1.9.6]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.5...v1.9.6
 [1.9.5]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.4...v1.9.5
