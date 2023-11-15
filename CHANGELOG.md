@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.11.0](#11100---2023-11-15)
 - [1.10.0](#1100---2023-10-05)
 - [1.9.7](#197---2023-09-25)
 - [1.9.6](#196---2023-09-20)
@@ -34,6 +35,12 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.11.0] - 2023-11-15
 ### Added
 - Auto-update: added -optional- automatic checks for updates on script load; enabled by default. Compares version of current file against GitHub repository. Manual checking can also be found at the settings menu. For buttons within the toolbar every button will check for updates independently (although the toolbar menu has an entry for batch checking). Setting may also be globally switched at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json', by changing 'bAutoUpdateCheck'. It will apply by default to any new installed script (previous scripts will still need to be manually configured to change them).
 - Buttons bar: added some safe-checks to panel properties.
@@ -328,7 +335,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.10.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.11.0...HEAD
+[1.11.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.7...v1.10.0
 [1.9.7]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.6...v1.9.7
 [1.9.6]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.5...v1.9.6
