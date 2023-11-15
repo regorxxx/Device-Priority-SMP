@@ -1,5 +1,5 @@
 ﻿'use strict';
-//28/02/23
+//15/11/23
 
 /* 
 	Output device priority
@@ -13,8 +13,9 @@ include('..\\helpers\\helpers_xxx_file.js');
 include('..\\helpers\\menu_xxx.js');
 include('..\\helpers\\callbacks_xxx.js');
 var prefix = 'dp_';
+var version = '1.11.0';
 
-try {window.DefineScript('Output device priority button', {author:'XXX', version: '1.5.0', features: {drag_n_drop: false}});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
+try {window.DefineScript('Output device priority button', {author:'regorxxx', version, features: {drag_n_drop: false}});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
 
 checkCompatible('1.6.1', 'smp');
 checkCompatible('1.4.0', 'fb');
@@ -153,7 +154,7 @@ addButton({
 			info += '\n(Shift to bypass auto-switch on device change)';
 		}
 		return info;
-	}, prefix, newButtonsProperties, chars.headphones),
+	}, prefix, newButtonsProperties, chars.headphones, void(0), void(0), void(0), void(0), {scriptName: 'Device-Priority-SMP', version}),
 });
 
 // Default state
