@@ -2,7 +2,8 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
-- [1.11.0](#11100---2023-11-15)
+- [1.11.1](#1111---2023-11-16)
+- [1.11.0](#1110---2023-11-15)
 - [1.10.0](#1100---2023-10-05)
 - [1.9.7](#197---2023-09-25)
 - [1.9.6](#196---2023-09-20)
@@ -35,6 +36,12 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.11.1] - 2023-11-16
 ### Added
 ### Changed
 - Buttons bar: transparency input popup now has a description for the values.
@@ -337,7 +344,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.11.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.11.1...HEAD
+[1.11.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.7...v1.10.0
 [1.9.7]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.9.6...v1.9.7
