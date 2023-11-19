@@ -37,6 +37,7 @@
 
 ## [Unreleased][]
 ### Added
+- Buttons bar: new setting to enable asynchronous loading of buttons, now the default behavior.
 ### Changed
 ### Removed
 ### Fixed
