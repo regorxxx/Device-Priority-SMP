@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.12.0](#1120---2023-11-24)
 - [1.11.1](#1111---2023-11-16)
 - [1.11.0](#1110---2023-11-15)
 - [1.10.0](#1100---2023-10-05)
@@ -37,12 +38,19 @@
 
 ## [Unreleased][]
 ### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.12.0] - 2023-11-24
+### Added
 - Buttons bar: new setting to enable asynchronous loading of buttons, now the default behavior.
 ### Changed
 - Helpers: updated helpers.
 - Console: reduced max log file size to 1 MB.
 ### Removed
 ### Fixed
+- Auto-update: changed logic to check [Playlist Tools](https://github.com/regorxxx/Playlist-Tools-SMP/)'s buttons updates independently to the toolbar version, so mixed scripts versions no longer produce false negatives.
 
 ## [1.11.1] - 2023-11-16
 ### Added
