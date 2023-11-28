@@ -13,7 +13,7 @@ include('..\\helpers\\helpers_xxx_file.js');
 include('..\\helpers\\menu_xxx.js');
 include('..\\helpers\\callbacks_xxx.js');
 var prefix = 'dp_';
-var version = '1.12.0';
+var version = '1.13.0';
 
 try {window.DefineScript('Output device priority button', {author:'regorxxx', version, features: {drag_n_drop: false}});} catch (e) {/* console.log('Output device priority Button loaded.'); */} //May be loaded along other buttons
 
