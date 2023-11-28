@@ -2,7 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
-- [1.13.0](#1120---2023-11-28)
+- [1.13.0](#1130---2023-11-28)
 - [1.12.0](#1120---2023-11-24)
 - [1.11.1](#1111---2023-11-16)
 - [1.11.0](#1110---2023-11-15)
@@ -43,7 +43,7 @@
 ### Removed
 ### Fixed
 
-## [1.13.0] - 2023-11-24
+## [1.13.0] - 2023-11-28
 ### Added
 - Buttons bar: added compatibility with headless mode (for other buttons).
 - UI: added setting to disable tooltip on all scripts. Found at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json', by changing 'bTooltip'. By default tooltip is always shown. This setting will never be exposed within foobar, only at this file.
