@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [1.13.1](#1131---2023-12-08)
 - [1.13.0](#1130---2023-11-28)
 - [1.12.0](#1120---2023-11-24)
 - [1.11.1](#1111---2023-11-16)
@@ -39,9 +40,15 @@
 
 ## [Unreleased][]
 ### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.13.1] - 2023-12-08
+### Added
 - Toolbar: now supports color for image icons (which are not drawn using fonts).
 ### Changed
-Update package builder
+- Helpers: updated helpers.
 ### Removed
 ### Fixed
 
@@ -368,7 +375,8 @@ Update package builder
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.1...HEAD
+[1.13.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.0...v1.13.1
 [1.13.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.11.1...v1.12.0
 [1.11.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.11.0...v1.11.1
