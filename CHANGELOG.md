@@ -42,8 +42,10 @@
 ### Added
 ### Changed
 - Helpers: updated helpers.
+- Code cleanup.
 ### Removed
 ### Fixed
+- Minor fixes.
 
 ## [1.13.1] - 2023-12-08
 ### Added
