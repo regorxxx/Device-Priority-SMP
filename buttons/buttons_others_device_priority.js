@@ -1,5 +1,5 @@
 ﻿'use strict';
-//31/12/23
+//03/01/24
 
 /*
 	Output device priority
@@ -11,7 +11,7 @@
 include('..\\helpers\\helpers_xxx.js');
 /* global globFonts:readable, VK_SHIFT:readable, MF_GRAYED:readable, checkCompatible:readable, folders:readable, MF_ENABLED:readable, repeatFn:readable */
 include('..\\helpers\\buttons_xxx.js');
-/* global getUniquePrefix:readable, buttonsBar:readable, addButton:readable, themedButton:readable */
+/* global getUniquePrefix:readable, buttonsBar:readable, addButton:readable, ThemedButton:readable */
 include('..\\helpers\\menu_xxx.js');
 /* global _menu:readable  */
 include('..\\helpers\\helpers_xxx_prototypes.js');
@@ -48,7 +48,7 @@ const devicesFile = folders.data + 'devices.json';
 const devicesPriorityFile = folders.data + 'devices_priority.json';
 
 addButton({
-	'Output device priority': new themedButton({ x: 0, y: 0, w: _gr.CalcTextWidth('Auto-device', _gdiFont(globFonts.button.name, globFonts.button.size * buttonsBar.config.scale)) + 30 * _scale(1, false) / _scale(buttonsBar.config.scale), h: 22 }, 'Auto-device', function () {
+	'Output device priority': new ThemedButton({ x: 0, y: 0, w: _gr.CalcTextWidth('Auto-device', _gdiFont(globFonts.button.name, globFonts.button.size * buttonsBar.config.scale)) + 30 * _scale(1, false) / _scale(buttonsBar.config.scale), h: 22 }, 'Auto-device', function () {
 		const size = 5;
 		const menu = new _menu();
 		menu.newEntry({ entryText: 'Device priority:', func: null, flags: MF_GRAYED });
@@ -113,7 +113,7 @@ addButton({
 		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8) : JSON.parse(fb.GetOutputDevices());
 		const optionsName = [];
 		const file = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) : null;
-		const priorityList = file ? file : [...Array(size)].map(() => { return { name: null, device_id: null }; });
+		const priorityList = file || [...Array(size)].map(() => { return { name: null, device_id: null }; });
 		range(1, size, 1).forEach((idx) => {
 			subMenuName.push(menu.newMenu('Set Device ' + idx));
 			const currMenu = subMenuName[idx - 1];
