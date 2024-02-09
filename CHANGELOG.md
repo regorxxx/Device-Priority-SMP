@@ -46,6 +46,7 @@
 - Toolbar: new settings for icon scale (now independent of button and text scale).
 ### Changed
 - Helpers: updated helpers.
+- Console: improved log file formatting on windows text editors which parse new lines only with CR+LF instead of LF.
 - Code cleanup.
 ### Removed
 ### Fixed
