@@ -52,6 +52,7 @@
 ### Removed
 ### Fixed
 - Toolbar: buttons' size not restored back to normal height after disabling 'Full size buttons' without reloading the panel.
+- UI: wrong parsing of png masks on unix systems (currently, it only affected the ListenBrainz icon when changing the font color).
 - Minor fixes.
 
 ## [1.13.1] - 2023-12-08
