@@ -46,6 +46,7 @@
 - Toolbar: new settings for text scale (now independent of button and icon scale).
 - Toolbar: new settings for icon scale (now independent of button and text scale).
 ### Changed
+- Buttons: changed filename for 'buttons_others_device_priority.js' to 'buttons_others_device_priority.js' Before updating, rename all instances of these names at '[foobar2000 profile]\js_data\buttons_XXX.json' with the new names. 'buttons_XXXXX.json' are all json button toolbar files.
 - Helpers: updated helpers.
 - Console: improved log file formatting on windows text editors which parse new lines only with CR+LF instead of LF.
 - Code cleanup.
