@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [2.0.0](#200---2024-02-28)
 - [1.13.1](#1131---2023-12-08)
 - [1.13.0](#1130---2023-11-28)
 - [1.12.0](#1120---2023-11-24)
@@ -39,6 +40,12 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [2.0.0] - 2024-02-28
 ### Added
 - Configuration: added integrity checks to global user settings files, found at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\[...].json'. In particular queries are now check to ensure they are valid and will throw a popup at init otherwise. Other settings are check to ensure they contain valid values too.
 - Configuration: expanded user configurable file at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json' with a new setting to output to console profiling logs at script init. They work globally. Disabled by default.
@@ -387,7 +394,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.1...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.1...v2.0.0
 [1.13.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.0...v1.13.1
 [1.13.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.11.1...v1.12.0
