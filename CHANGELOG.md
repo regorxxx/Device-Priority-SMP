@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [2.1.0](#210---2024-03-02)
 - [2.0.0](#200---2024-02-28)
 - [1.13.1](#1131---2023-12-08)
 - [1.13.0](#1130---2023-11-28)
@@ -40,6 +41,12 @@
 - [1.0.0](#100---2021-09-10)
 
 ## [Unreleased][]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [2.1.0] - 2024-03-02
 ### Added
 - Configuration: expanded user configurable file at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json' with a new setting for panel repaint debugging purpose. Disabled by default.
 ### Changed
@@ -398,7 +405,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.1...v2.0.0
 [1.13.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.0...v1.13.1
 [1.13.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.12.0...v1.13.0
