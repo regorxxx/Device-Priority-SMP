@@ -43,7 +43,9 @@
 ### Added
 - Configuration: expanded user configurable file at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json' with a new setting for panel repaint debugging purpose. Disabled by default.
 ### Changed
-- UI: Improved panel repaint routines to minimize resources usage.
+- Playback: workaround for some instances where the output devices throws an 'Output invalidated...' error when disconnecting a Bluetooth device and the device is changed but muted. Now the script tries first to change to the primary device before switching to the desired device (which seems to fix the problem for Asio devices).
+- UI: redesign of settings options. Workarounds can now be switched on/off if desired.
+- UI: improved panel repaint routines to minimize resources usage.
 ### Removed
 ### Fixed
 

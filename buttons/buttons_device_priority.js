@@ -1,5 +1,5 @@
 ﻿'use strict';
-//28/02/24
+//02/03/24
 
 /*
 	Output device priority
@@ -38,7 +38,9 @@ var newButtonsProperties = { // NOSONAR[global]
 	bStartup: ['Force device at startup?', true, { func: isBoolean }, true],
 	bEnabled: ['Auto-device enabled?', true, { func: isBoolean }, true],
 	refreshRate: ['Check devices every X ms (0 to disable)', 600, { func: isInt, range: [[0, 0], [50, Infinity]] }, 600],
-	bIconMode: ['Icon-only mode?', false, { func: isBoolean }, false]
+	bIconMode: ['Icon-only mode?', false, { func: isBoolean }, false],
+	bFixPlayback: ['Playback stop fix', true, { func: isBoolean }, true],
+	bFixInvalidated: ['Output invalidated fix', true, { func: isBoolean }, true]
 };
 setProperties(newButtonsProperties, prefix, 0); //This sets all the panel properties at once
 newButtonsProperties = getPropertiesPairs(newButtonsProperties, prefix, 0);
@@ -100,14 +102,37 @@ addButton({
 				}
 			}
 		});
-		menu.newCheckMenu(void (0), 'Enable Auto-Device?', void (0), () => { return this.buttonsProperties.bEnabled[1]; });
-		menu.newEntry({
-			entryText: 'Force on startup', func: () => {
-				this.buttonsProperties.bStartup[1] = !this.buttonsProperties.bStartup[1];
-				overwriteProperties(this.buttonsProperties);
-			}
-		});
-		menu.newCheckMenu(void (0), 'Force on startup', void (0), () => { return this.buttonsProperties.bStartup[1]; });
+		menu.newCheckMenuLast(() => this.buttonsProperties.bEnabled[1]);
+		{
+			const subMenuName = menu.newMenu('Other settings');
+			menu.newEntry({
+				menuName: subMenuName,
+				entryText: 'Force device on startup', func: () => {
+					this.buttonsProperties.bStartup[1] = !this.buttonsProperties.bStartup[1];
+					overwriteProperties(this.buttonsProperties);
+				}
+			});
+			menu.newCheckMenuLast(() => this.buttonsProperties.bStartup[1]);
+			menu.newEntry({ menuName: subMenuName, entryText: 'sep' });
+			menu.newEntry({
+				menuName: subMenuName,
+				entryText: 'Playback fix', func: () => {
+					this.buttonsProperties.bFixPlayback[1] = !this.buttonsProperties.bFixPlayback[1];
+					overwriteProperties(this.buttonsProperties);
+					fb.ShowPopupMessage('Workaround for some instances where the output devices throws an error and playback is stopped. Now playback is resumed again.\n\nWorkaround for random instances where playback changes to beginning of track after device switching (foobar bug?). Now playback is forced at cached position after device switching. Multiple retries. Both changes should produce much smoother (and faster) output device switching now.', 'Auto-Device');
+				}
+			});
+			menu.newCheckMenuLast(() => this.buttonsProperties.bFixPlayback[1]);
+			menu.newEntry({
+				menuName: subMenuName,
+				entryText: 'Output invalidated fix', func: () => {
+					this.buttonsProperties.bFixInvalidated[1] = !this.buttonsProperties.bFixInvalidated[1];
+					overwriteProperties(this.buttonsProperties);
+					fb.ShowPopupMessage('Workaround for some instances where the output devices throws an \'Output invalidated...\' error when disconnecting a Bluetooth device and the device is changed but muted.\n\nThe script tries first to change to the primary device before switching to the desired device (which seems to fix the problem for Asio devices).', 'Auto-Device');
+				}
+			});
+			menu.newCheckMenuLast(() => this.buttonsProperties.bFixInvalidated[1]);
+		}
 		menu.newEntry({ entryText: 'sep' });
 		const subMenuName = [];
 		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8) : JSON.parse(fb.GetOutputDevices());
@@ -221,6 +246,7 @@ function outputDevicePriority() {
 	if (!priorityList.length) { return; }
 	devicePriority.referenceDevices = fb.GetOutputDevices();
 	const devices = JSON.parse(devicePriority.referenceDevices);
+	const primOut = devices.find((dev) => { return dev.name.startsWith('Default: Primary Sound Driver'); });
 	let bDone = false;
 	priorityList.forEach((device) => {
 		if (typeof device !== 'object' || !Object.hasOwn(device, 'name')) { return; }
@@ -230,15 +256,18 @@ function outputDevicePriority() {
 			const currDevice = devices[idx];
 			if (currDevice.active) { bDone = true; return; }
 			devicePriority.bOmitCallback = true;
+			if (devicePriority.properties.bFixInvalidated[1] && primOut) {fb.SetOutputDevice(primOut.output_id, primOut.device_id);}
 			fb.SetOutputDevice(currDevice.output_id, currDevice.device_id);
 			console.log('Auto-Switch output device to: ', device.name, device.device_id);
 			if (Object.hasOwn(device, 'volume') && device.volume !== null && fb.Volume !== device.volume) {
 				fb.Volume = device.volume;
 				console.log('Auto-Switch volume to: ' + (100 + fb.Volume));
 			}
-			if (fb.IsPaused) { fb.PlayOrPause(); } // Workaround for Bluetooth devices pausing on power off
 			// Try to fix playback
-			[50, 100, 150, 200, 250, 300].forEach((ms, i) => { setTimeout(fixNowPlaying, ms, i + 1); });
+			if (devicePriority.properties.bFixPlayback[1]) {
+				if (fb.IsPaused) { fb.PlayOrPause(); } // Pausing on power off
+				[50, 100, 150, 200, 250, 300, 600, 1000].forEach((ms, i) => { setTimeout(fixNowPlaying, ms, i + 1); }); // Playback restarted to the beginning
+			}
 			bDone = true;
 		}
 	});
