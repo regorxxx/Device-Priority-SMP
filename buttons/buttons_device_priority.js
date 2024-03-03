@@ -1,5 +1,5 @@
 ﻿'use strict';
-//02/03/24
+//03/03/24
 
 /*
 	Output device priority
@@ -211,7 +211,7 @@ addButton({
 buttonsBar.buttons['Output device priority'].active = buttonsBar.buttons['Output device priority'].buttonsProperties.bEnabled[1];
 // Helpers
 const devicePriority = {
-	nowPlaying: { time: -1, plsIdx: -1, itemIdx: -1, handle: null },
+	nowPlaying: { time: -1, plsIdx: -1, itemIdx: -1, handle: null, bFixing: false },
 	bOmitCallback: false,
 	referenceDevices: fb.GetOutputDevices(),
 	refreshRate: buttonsBar.buttons['Output device priority'].buttonsProperties.refreshRate[1],
@@ -246,7 +246,7 @@ function outputDevicePriority() {
 	if (!priorityList.length) { return; }
 	devicePriority.referenceDevices = fb.GetOutputDevices();
 	const devices = JSON.parse(devicePriority.referenceDevices);
-	const primOut = devices.find((dev) => { return dev.name.startsWith('Default: Primary Sound Driver'); });
+	const primOut = devices.find((dev) => { return dev.name.startsWith('Default : Primary Sound Driver'); });
 	let bDone = false;
 	priorityList.forEach((device) => {
 		if (typeof device !== 'object' || !Object.hasOwn(device, 'name')) { return; }
@@ -256,7 +256,7 @@ function outputDevicePriority() {
 			const currDevice = devices[idx];
 			if (currDevice.active) { bDone = true; return; }
 			devicePriority.bOmitCallback = true;
-			if (devicePriority.properties.bFixInvalidated[1] && primOut) {fb.SetOutputDevice(primOut.output_id, primOut.device_id);}
+			if (devicePriority.properties.bFixInvalidated[1] && primOut) { fb.SetOutputDevice(primOut.output_id, primOut.device_id); }
 			fb.SetOutputDevice(currDevice.output_id, currDevice.device_id);
 			console.log('Auto-Switch output device to: ', device.name, device.device_id);
 			if (Object.hasOwn(device, 'volume') && device.volume !== null && fb.Volume !== device.volume) {
@@ -266,7 +266,14 @@ function outputDevicePriority() {
 			// Try to fix playback
 			if (devicePriority.properties.bFixPlayback[1]) {
 				if (fb.IsPaused) { fb.PlayOrPause(); } // Pausing on power off
-				[50, 100, 150, 200, 250, 300, 600, 1000].forEach((ms, i) => { setTimeout(fixNowPlaying, ms, i + 1); }); // Playback restarted to the beginning
+				devicePriority.nowPlaying.bFixing = true;
+				Promise.allSettled(
+					[50, 100, 150, 200, 250, 300, 600, 1000].map((ms, i) => { // Playback restarted
+						return new Promise((resolve) => {
+							setTimeout(() => {fixNowPlaying(i + 1); resolve(); }, ms);
+						});
+					})
+				).then(() => devicePriority.nowPlaying.bFixing = false);
 			}
 			bDone = true;
 		}
@@ -275,7 +282,7 @@ function outputDevicePriority() {
 }
 
 function cacheNowPlaying() {
-	if (fb.IsPlaying) {
+	if (fb.IsPlaying && !devicePriority.nowPlaying.bFixing) {
 		const playingItem = plman.GetPlayingItemLocation();
 		devicePriority.nowPlaying.time = -1;
 		devicePriority.nowPlaying.plsIdx = -1;
@@ -311,7 +318,7 @@ function fixNowPlaying(i) {
 				plman.ActivePlayist = cache.plsIdx;
 				plman.SetPlaylistFocusItem(cache.plsIdx, cache.itemIdx);
 			}
-			console.log('Output device priority: fixed playback at ' + i + ' retry.');
+			console.log('Output device priority: fixed playback at ' + i + 'º retry.');
 		}
 	}
 }

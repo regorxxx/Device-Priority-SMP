@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [2.1.1](#210---2024-03-03)
 - [2.1.0](#210---2024-03-02)
 - [2.0.0](#200---2024-02-28)
 - [1.13.1](#1131---2023-12-08)
@@ -45,6 +46,14 @@
 ### Changed
 ### Removed
 ### Fixed
+
+## [2.1.1] - 2024-03-03
+### Added
+### Changed
+### Removed
+### Fixed
+- Playback: workaround for 'Output invalidated...' was not working properly due to wrong device name for default one.
+- Playback: playback fix was not working properly in some cases.
 
 ## [2.1.0] - 2024-03-02
 ### Added
@@ -406,6 +415,7 @@
 ### Fixed
 
 [Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.1.0...HEAD
+[2.1.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.1...v2.0.0
 [1.13.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.0...v1.13.1
