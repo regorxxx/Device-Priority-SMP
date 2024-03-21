@@ -2,7 +2,8 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
-- [2.1.1](#210---2024-03-03)
+- [2.2.0](#220---2024-03-21)
+- [2.1.1](#211---2024-03-03)
 - [2.1.0](#210---2024-03-02)
 - [2.0.0](#200---2024-02-28)
 - [1.13.1](#1131---2023-12-08)
@@ -43,7 +44,16 @@
 
 ## [Unreleased][]
 ### Added
+## Changed
+### Removed
+### Fixed
+
+## [2.1.1] - 2024-03-03
+### Added
+- Configuration: expanded user configurable file at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json' with a new setting to check OS features on every panel startup. Enabled by default. This has been the default behavior since OS' features check was implemented, but it can now be disabled to improve init performance a bit, specially at foobar2000 startup (since it seems to hang in some cases when running it on slow HDDs or systems).
 ### Changed
+- UI: Improved panel repaint routines to minimize resources usage.
+- Helpers: updated helpers.
 ### Removed
 ### Fixed
 
@@ -414,7 +424,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v1.13.1...v2.0.0
