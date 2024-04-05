@@ -1,5 +1,5 @@
 ﻿'use strict';
-//03/03/24
+//05/04/24
 
 /*
 	Output device priority
@@ -26,7 +26,7 @@ include('..\\helpers\\callbacks_xxx.js');
 /* global removeEventListenerSelf:readable */
 
 var prefix = 'dp_'; // NOSONAR[global]
-var version = '2.1.1'; // NOSONAR[global]
+var version = '2.2.0'; // NOSONAR[global]
 
 try { window.DefineScript('Output device priority button', { author: 'regorxxx', version, features: { drag_n_drop: false } }); } catch (e) { /* May be loaded along other buttons */ }
 
@@ -59,7 +59,9 @@ addButton({
 			entryText: 'Export device list' + (_isFile(devicesFile) ? '\t(overwrite)' : '\t(new)'), func: () => {
 				fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nExport first the device list with all the desired devices connected to use them at a later point (even if the devices are not connected).\n\n\'Set Device X\' menus will only show either currently connected devices or the ones from the exported list.\n\nIn other words, you can only assign devices to the priority list if they are available on the menus. A disconnected device, not available on the exported list, will be shown as \'Not connected device\', with its name at top. Functionality will be the same (for auto-switching purposes) but it will not be on the list of available devices, nor clickable (so you will not be able to set it to another position unless you connect it first).', 'Output device priority');
 				const listExport = JSON.parse(fb.GetOutputDevices()); // Reformat with tabs
-				if (!_save(devicesFile, JSON.stringify(listExport, null, '\t'))) { console.log('Output device priority: file saving failed (' + devicesFile + ')'); }
+				if (!_save(devicesFile, JSON.stringify(listExport, null, '\t').replace(/\n/g, '\r\n'))) {
+					console.log('Output device priority: file saving failed (' + devicesFile + ')');
+				}
 			}
 		});
 		{
@@ -82,7 +84,9 @@ addButton({
 					fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nAdds any device currently attached to the list if it\'s not present (no duplicates). Option is only available after exporting the list at least once.', 'Output device priority');
 					if (!options) { return; }
 					toAdd.forEach((newDev) => { options.push(newDev); });
-					if (!_save(devicesFile, JSON.stringify(options, null, '\t'))) { console.log('Output device priority: file saving failed (' + devicesFile + ')'); }
+					if (!_save(devicesFile, JSON.stringify(options, null, '\t').replace(/\n/g, '\r\n'))) {
+						console.log('Output device priority: file saving failed (' + devicesFile + ')');
+					}
 					else { console.log('Output device priority: no new devices added.'); }
 				}, flags: toAdd.length && bFile ? MF_ENABLED : MF_GRAYED
 			});
@@ -161,7 +165,9 @@ addButton({
 						} catch (e) { return; }
 						if (input === currVol) { return; }
 						priorityList[idx - 1].volume = input;
-						if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t'))) { console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')'); }
+						if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t').replace(/\n/g, '\r\n'))) {
+							console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')');
+						}
 					}, flags: currDev ? MF_ENABLED : MF_GRAYED
 				});
 				menu.newEntry({ menuName: currMenu, entryText: 'sep' });
@@ -181,7 +187,9 @@ addButton({
 						menu.newEntry({
 							menuName: currMenu, entryText: deviceName, func: () => {
 								priorityList[idx - 1] = entry.name !== 'None' ? { name: entry.name, device_id: entry.device_id } : { name: null, device_id: null };
-								if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t'))) { console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')'); }
+								if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t').replace(/\n/g, '\r\n'))) {
+									console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')');
+								}
 							}, flags: index === 1 ? MF_GRAYED : MF_ENABLED
 						});
 					}
@@ -270,7 +278,7 @@ function outputDevicePriority() {
 				Promise.allSettled(
 					[50, 100, 150, 200, 250, 300, 600, 1000].map((ms, i) => { // Playback restarted
 						return new Promise((resolve) => {
-							setTimeout(() => {fixNowPlaying(i + 1); resolve(); }, ms);
+							setTimeout(() => { fixNowPlaying(i + 1); resolve(); }, ms);
 						});
 					})
 				).then(() => devicePriority.nowPlaying.bFixing = false);
