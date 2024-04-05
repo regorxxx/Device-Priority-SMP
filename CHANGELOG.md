@@ -45,7 +45,8 @@
 ## [Unreleased][]
 ### Added
 ## Changed
-### Removed
+- Helpers: json data files are now saved with Windows EOL for compatibility improvements with Windows text editors.
+- Helpers: json button files are now saved with Windows EOL for compatibility improvements with Windows text editors.
 ### Fixed
 
 ## [2.1.1] - 2024-03-03
