@@ -45,6 +45,11 @@
 ## [Unreleased][]
 ### Added
 ## Changed
+- Playback: workaround for 'Output invalidated...' is now configurable, dummy device can be set to null or primary device.
+- Playback: playback fix is now extended up to 2 secs retrying (12 steps).
+- UI: device list specifies when a device entry is associated to exclusive mode.
+- UI: cleanup of device names.
+- UI: general code cleanup with caching of devices priority list, so it should work faster or produce less glitches on device changes (since the device processing seems to be really sensitive to timing).
 - Helpers: json data files are now saved with Windows EOL for compatibility improvements with Windows text editors.
 - Helpers: json button files are now saved with Windows EOL for compatibility improvements with Windows text editors.
 - Readmes: added readme for global settings found at'foobar2000\js_data\presets\global' .json files.
@@ -52,7 +57,7 @@
 - Configuration: expanded user configurable file at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json' with a new setting for console logging to file. Disabled by default. Now this is a change from the previous behavior, where console was always logged to 'console.log' file at the [FOOBAR PROFILE FOLDER]. It can now be switched, but since it's probably not useful for most users is disabled by default.
 ### Fixed
 
-## [2.1.1] - 2024-03-03
+## [2.2.0] - 2024-03-21
 ### Added
 - Configuration: expanded user configurable file at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json' with a new setting to check OS features on every panel startup. Enabled by default. This has been the default behavior since OS' features check was implemented, but it can now be disabled to improve init performance a bit, specially at foobar2000 startup (since it seems to hang in some cases when running it on slow HDDs or systems).
 ### Changed

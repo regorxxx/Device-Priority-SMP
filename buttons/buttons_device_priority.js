@@ -1,5 +1,5 @@
 ﻿'use strict';
-//05/04/24
+//31/05/24
 
 /*
 	Output device priority
@@ -40,7 +40,7 @@ var newButtonsProperties = { // NOSONAR[global]
 	refreshRate: ['Check devices every X ms (0 to disable)', 600, { func: isInt, range: [[0, 0], [50, Infinity]] }, 600],
 	bIconMode: ['Icon-only mode?', false, { func: isBoolean }, false],
 	bFixPlayback: ['Playback stop fix', true, { func: isBoolean }, true],
-	bFixInvalidated: ['Output invalidated fix', true, { func: isBoolean }, true]
+	fixInvalidated: ['Output invalidated fix (0 to disable)', 1, { func: isInt, range: [[0, 2]] }, 1]
 };
 setProperties(newButtonsProperties, prefix, 0); //This sets all the panel properties at once
 newButtonsProperties = getPropertiesPairs(newButtonsProperties, prefix, 0);
@@ -52,7 +52,11 @@ const devicesPriorityFile = folders.data + 'devices_priority.json';
 addButton({
 	'Output device priority': new ThemedButton({ x: 0, y: 0, w: _gr.CalcTextWidth('Auto-device', _gdiFont(globFonts.button.name, globFonts.button.size * buttonsBar.config.scale)) + 30 * _scale(1, false) / _scale(buttonsBar.config.scale), h: 22 }, 'Auto-device', function () {
 		const size = 5;
-		const menu = new _menu();
+		const file = _isFile(devicesPriorityFile)
+			? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8)
+			: null;
+		const priorityList = file || [...Array(size)].map(() => { return { name: null, device_id: null }; });
+		const menu = new _menu({ onBtnUp: () => devicePriority.priorityList = file || [] });
 		menu.newEntry({ entryText: 'Device priority:', func: null, flags: MF_GRAYED });
 		menu.newEntry({ entryText: 'sep' });
 		menu.newEntry({
@@ -127,28 +131,45 @@ addButton({
 				}
 			});
 			menu.newCheckMenuLast(() => this.buttonsProperties.bFixPlayback[1]);
-			menu.newEntry({
-				menuName: subMenuName,
-				entryText: 'Output invalidated fix', func: () => {
-					this.buttonsProperties.bFixInvalidated[1] = !this.buttonsProperties.bFixInvalidated[1];
-					overwriteProperties(this.buttonsProperties);
-					fb.ShowPopupMessage('Workaround for some instances where the output devices throws an \'Output invalidated...\' error when disconnecting a Bluetooth device and the device is changed but muted.\n\nThe script tries first to change to the primary device before switching to the desired device (which seems to fix the problem for Asio devices).', 'Auto-Device');
-				}
-			});
-			menu.newCheckMenuLast(() => this.buttonsProperties.bFixInvalidated[1]);
+			{
+				const subMenuNameFix = menu.newMenu('Output invalidated fix', subMenuName);
+				menu.newEntry({ menuName: subMenuNameFix, entryText: 'Workaround using dummy device:', flags: MF_GRAYED });
+				menu.newEntry({ menuName: subMenuNameFix, entryText: 'sep' });
+				const options = [
+					{ name: 'No Fix' },
+					{ name: 'Null Output' },
+					{ name: 'Primary Device' }
+				];
+				options.forEach((option, i) => {
+					menu.newEntry({
+						menuName: subMenuNameFix,
+						entryText: option.name, func: () => {
+							this.buttonsProperties.fixInvalidated[1] = i;
+							overwriteProperties(this.buttonsProperties);
+							if (this.buttonsProperties.fixInvalidated[1]) {
+								fb.ShowPopupMessage('Workaround for some instances where the output devices throws an \'Output invalidated...\' error when disconnecting a Bluetooth device and the device is changed but muted.\n\nThe script tries first to change to a dummy device before switching to the desired device (which seems to fix the problem for some ASIO devices).', 'Auto-Device');
+							}
+						}
+					});
+				});
+				menu.newCheckMenuLast(() => this.buttonsProperties.fixInvalidated[1], options.length);
+			}
 		}
 		menu.newEntry({ entryText: 'sep' });
 		const subMenuName = [];
-		const options = _isFile(devicesFile) ? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8) : JSON.parse(fb.GetOutputDevices());
+		const options = _isFile(devicesFile)
+			? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8)
+			: JSON.parse(fb.GetOutputDevices());
 		const optionsName = [];
-		const file = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) : null;
-		const priorityList = file || [...Array(size)].map(() => { return { name: null, device_id: null }; });
 		range(1, size, 1).forEach((idx) => {
 			subMenuName.push(menu.newMenu('Set Device ' + idx));
 			const currMenu = subMenuName[idx - 1];
 			const currEntry = priorityList[idx - 1];
 			const currDev = Object.hasOwn(currEntry, 'name') ? currEntry.name : null;
-			const currDevR = currDev ? currDev.replace('DS :', '').replace('ASIO :', '') : '';
+			const bExclusive = currDev && currDev.indexOf('exclusive') !== -1;
+			const currDevR = currDev
+				? currDev.replace('DS : ', '').replace('Default : ', '').replace('ASIO : ', '').replace(' [Exclusive]', '').replace(' exclusive', '') + (bExclusive ? '\t[exclusive]' : '')
+				: '';
 			{	// Header
 				menu.newEntry({ menuName: currMenu, entryText: 'Current device: ' + (currDev ? (currDevR.length > 20 ? currDevR.substring(0, 20) + ' ...' : currDevR) : '-'), func: null, flags: MF_GRAYED });
 				menu.newEntry({ menuName: currMenu, entryText: 'sep' });
@@ -180,8 +201,12 @@ addButton({
 						optionsName.push(entry.name);
 					}
 					else {
-						let deviceName = entry.name;
+						let deviceName = entry.name
+							.replace('Default : ', '');
+						const bExclusive = deviceName.indexOf('exclusive') !== -1;
+						deviceName = deviceName.replace(' [exclusive]', '').replace(' exclusive', '');
 						deviceName = deviceName.length > 40 ? deviceName.substring(0, 40) + ' ...' : deviceName;
+						if (bExclusive) { deviceName += '\t[exclusive]'; }
 						// Entries
 						optionsName.push(deviceName);
 						menu.newEntry({
@@ -236,35 +261,41 @@ const devicePriority = {
 		outputDevicePriority();
 	},
 	properties: buttonsBar.buttons['Output device priority'].buttonsProperties,
-	manualDevice: null
+	manualDevice: null,
+	priorityList: _isFile(devicesPriorityFile)
+		? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) || []
+		: []
 };
 function outputDevicePriority() {
 	if (!devicePriority.properties.bEnabled[1]) { return; }
+	const newDevices = fb.GetOutputDevices();
 	if (utils.IsKeyPressed(VK_SHIFT)) {
-		const newDevices = JSON.parse(fb.GetOutputDevices());
-		const manualDevice = newDevices.find((dev) => { return dev.active; });
+		const currDevices = JSON.parse(newDevices);
+		const manualDevice = currDevices.find((dev) => { return dev.active; });
 		if (manualDevice) { devicePriority.manualDevice = manualDevice.name; }
 		return;
 	} else if (devicePriority.manualDevice !== null) {
 		const oldIds = new Set(JSON.parse(devicePriority.referenceDevices).map((dev) => dev.device_id));
-		const newIds = new Set(JSON.parse(fb.GetOutputDevices()).map((dev) => dev.device_id));
+		const newIds = new Set(JSON.parse(newDevices).map((dev) => dev.device_id));
 		if (oldIds.isEqual(newIds)) { return; }
 	}
-	const priorityList = _isFile(devicesPriorityFile) ? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8) || [] : [];
-	if (!priorityList.length) { return; }
-	devicePriority.referenceDevices = fb.GetOutputDevices();
+	if (!devicePriority.priorityList.length) { return; }
+	devicePriority.referenceDevices = newDevices;
 	const devices = JSON.parse(devicePriority.referenceDevices);
-	const primOut = devices.find((dev) => { return dev.name.startsWith('Default : Primary Sound Driver'); });
+	const primOut = devicePriority.properties.fixInvalidated[1]
+		? devicePriority.properties.fixInvalidated[1] === 1
+			? devices.find((dev) => dev.name === 'Null Output')
+			: devices.find((dev) => dev.name === 'Default : Primary Sound Driver')
+		: void (0);
 	let bDone = false;
-	priorityList.forEach((device) => {
-		if (typeof device !== 'object' || !Object.hasOwn(device, 'name')) { return; }
-		if (bDone) { return; }
-		const idx = devices.findIndex((dev) => { return dev.name === device.name || dev.device_id === device.device_id; });
+	for (let device of devicePriority.priorityList) {
+		if (typeof device !== 'object' || !Object.hasOwn(device, 'name')) { continue; }
+		const idx = devices.findIndex((dev) => dev.name === device.name || dev.device_id === device.device_id);
 		if (idx !== -1) {
 			const currDevice = devices[idx];
-			if (currDevice.active) { bDone = true; return; }
+			if (currDevice.active) { bDone = true; break; }
 			devicePriority.bOmitCallback = true;
-			if (devicePriority.properties.bFixInvalidated[1] && primOut) { fb.SetOutputDevice(primOut.output_id, primOut.device_id); }
+			if (primOut) { fb.SetOutputDevice(primOut.output_id, primOut.device_id); }
 			fb.SetOutputDevice(currDevice.output_id, currDevice.device_id);
 			console.log('Auto-Switch output device to: ', device.name, device.device_id);
 			if (Object.hasOwn(device, 'volume') && device.volume !== null && fb.Volume !== device.volume) {
@@ -276,16 +307,22 @@ function outputDevicePriority() {
 				if (fb.IsPaused) { fb.PlayOrPause(); } // Pausing on power off
 				devicePriority.nowPlaying.bFixing = true;
 				Promise.allSettled(
-					[50, 100, 150, 200, 250, 300, 600, 1000].map((ms, i) => { // Playback restarted
+					[50, 100, 150, 200, 250, 300, 400, 600, 800, 1000, 1500, 2000].map((ms, i) => { // Playback restarted
 						return new Promise((resolve) => {
-							setTimeout(() => { fixNowPlaying(i + 1); resolve(); }, ms);
+							setTimeout(() => {
+								fixNowPlaying(i + 1);
+								resolve();
+							}, ms);
 						});
 					})
-				).then(() => devicePriority.nowPlaying.bFixing = false);
+				).then(() => {
+					devicePriority.nowPlaying.bFixing = false;
+				});
 			}
 			bDone = true;
+			break;
 		}
-	});
+	}
 	if (!bDone) { console.log('Output device priority: No devices matched the priority list.'); }
 }
 
