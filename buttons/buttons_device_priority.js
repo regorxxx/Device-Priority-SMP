@@ -1,5 +1,5 @@
 ﻿'use strict';
-//31/05/24
+//01/06/24
 
 /*
 	Output device priority
@@ -40,7 +40,8 @@ var newButtonsProperties = { // NOSONAR[global]
 	refreshRate: ['Check devices every X ms (0 to disable)', 600, { func: isInt, range: [[0, 0], [50, Infinity]] }, 600],
 	bIconMode: ['Icon-only mode?', false, { func: isBoolean }, false],
 	bFixPlayback: ['Playback stop fix', true, { func: isBoolean }, true],
-	fixInvalidated: ['Output invalidated fix (0 to disable)', 1, { func: isInt, range: [[0, 2]] }, 1]
+	fixInvalidated: ['Output invalidated fix (0 to disable)', 1, { func: isInt, range: [[0, 2]] }, 1],
+	fixNoDevice: ['No device fix (-1 to disable)', -1, { func: isInt, eq: [-1, 1, 10, 25, 50] }, -1]
 };
 setProperties(newButtonsProperties, prefix, 0); //This sets all the panel properties at once
 newButtonsProperties = getPropertiesPairs(newButtonsProperties, prefix, 0);
@@ -124,7 +125,7 @@ addButton({
 			menu.newEntry({ menuName: subMenuName, entryText: 'sep' });
 			menu.newEntry({
 				menuName: subMenuName,
-				entryText: 'Playback fix', func: () => {
+				entryText: 'Playback stop fix', func: () => {
 					this.buttonsProperties.bFixPlayback[1] = !this.buttonsProperties.bFixPlayback[1];
 					overwriteProperties(this.buttonsProperties);
 					fb.ShowPopupMessage('Workaround for some instances where the output devices throws an error and playback is stopped. Now playback is resumed again.\n\nWorkaround for random instances where playback changes to beginning of track after device switching (foobar bug?). Now playback is forced at cached position after device switching. Multiple retries. Both changes should produce much smoother (and faster) output device switching now.', 'Auto-Device');
@@ -153,6 +154,33 @@ addButton({
 					});
 				});
 				menu.newCheckMenuLast(() => this.buttonsProperties.fixInvalidated[1], options.length);
+			}
+			{
+				const subMenuNameFix = this.buttonsProperties.fixInvalidated[1]
+					? menu.newMenu('No device fix', subMenuName)
+					: menu.newMenu('No device fix\t(output invalidated disabled)', subMenuName, MF_GRAYED);
+				menu.newEntry({ menuName: subMenuNameFix, entryText: 'Workaround forcing a device every X ms:', flags: MF_GRAYED });
+				menu.newEntry({ menuName: subMenuNameFix, entryText: 'sep' });
+				const options = [
+					{ name: 'Disabled', val: -1 },
+					{ name: 'Aggressive', val: 1 },
+					{ name: '10 ms', val: 10  },
+					{ name: '25 ms', val: 25  },
+					{ name: '50 ms', val: 50  },
+				];
+				options.forEach((option) => {
+					menu.newEntry({
+						menuName: subMenuNameFix,
+						entryText: option.name, func: () => {
+							this.buttonsProperties.fixNoDevice[1] = option.val;
+							overwriteProperties(this.buttonsProperties);
+							if (this.buttonsProperties.fixNoDevice[1] !== -1) {
+								fb.ShowPopupMessage('Workaround for some instances where foobar2000 opens the Preferences/Playback/Output window when disconnecting a device since it doesn\'t properly assign a device as fallback.\n\nThe script tries to check devices every X ms and assign a dummy device before switching to the desired device.', 'Auto-Device');
+							}
+						}
+					});
+				});
+				menu.newCheckMenuLast(() => options.findIndex((o) => o.val === this.buttonsProperties.fixNoDevice[1]), options.length);
 			}
 		}
 		menu.newEntry({ entryText: 'sep' });
@@ -318,6 +346,21 @@ function outputDevicePriority() {
 				).then(() => {
 					devicePriority.nowPlaying.bFixing = false;
 				});
+			}
+			// Try to fix popup no device
+			if (primOut && devicePriority.properties.fixNoDevice[1] > 0) {
+				setTimeout(() => {
+					const now = Date.now();
+					const id = setInterval(() => {
+						if (Date.now() - now > 2000) { clearInterval(id); }
+						const devices = JSON.parse(fb.GetOutputDevices());
+						if (devices.every((dev) => !dev.active)) {
+							fb.SetOutputDevice(primOut.output_id, primOut.device_id);
+							console.log('Output device priority: fixed no device.');
+							clearInterval(id);
+						}
+					}, devicePriority.properties.fixNoDevice[1]);
+				}, devicePriority.properties.fixNoDevice[1] <= 10 ? 10 : 25);
 			}
 			bDone = true;
 			break;

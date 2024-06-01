@@ -44,6 +44,7 @@
 
 ## [Unreleased][]
 ### Added
+- Playback: workaround for 'Preferences\Playback\Output' window being shown in some cases when disconnecting a device. Disabled by default. It's only available if also the workaround for 'Output invalidated...' is enabled.
 ## Changed
 - Playback: workaround for 'Output invalidated...' is now configurable, dummy device can be set to null or primary device.
 - Playback: playback fix is now extended up to 2 secs retrying (12 steps).
