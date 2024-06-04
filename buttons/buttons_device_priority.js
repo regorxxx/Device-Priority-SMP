@@ -175,7 +175,7 @@ addButton({
 							this.buttonsProperties.fixNoDevice[1] = option.val;
 							overwriteProperties(this.buttonsProperties);
 							if (this.buttonsProperties.fixNoDevice[1] !== -1) {
-								fb.ShowPopupMessage('Workaround for some instances where foobar2000 opens the Preferences/Playback/Output window when disconnecting a device since it doesn\'t properly assign a device as fallback.\n\nThe script tries to check devices every X ms and assign a dummy device before switching to the desired device.', 'Auto-Device');
+								fb.ShowPopupMessage('Workaround for some instances where foobar2000 opens the Preferences\\Playback\\Output window when disconnecting a device since it doesn\'t properly assign a device as fallback.\n\nThe script tries to check devices every X ms and assign a dummy device before switching to the desired device.', 'Auto-Device');
 							}
 						}
 					});
