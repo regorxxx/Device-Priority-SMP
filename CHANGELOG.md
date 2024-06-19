@@ -56,7 +56,9 @@
 - Readmes: added readme for global settings found at'foobar2000\js_data\presets\global' .json files.
 - Helpers: updated helpers.
 - Configuration: expanded user configurable file at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json' with a new setting for console logging to file. Disabled by default. Now this is a change from the previous behavior, where console was always logged to 'console.log' file at the [FOOBAR PROFILE FOLDER]. It can now be switched, but since it's probably not useful for most users is disabled by default.
+### Removed
 ### Fixed
+- Configuration: .json files at 'foobar2000\js_data\presets\global' not being saved with the calculated properties based on user values from other files.
 
 ## [2.2.0] - 2024-03-21
 ### Added
