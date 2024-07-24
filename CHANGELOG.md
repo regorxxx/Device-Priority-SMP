@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [2.3.0](#230---2024-07-24)
 - [2.2.0](#220---2024-03-21)
 - [2.1.1](#211---2024-03-03)
 - [2.1.0](#210---2024-03-02)
@@ -44,6 +45,12 @@
 
 ## [Unreleased][]
 ### Added
+## Changed
+### Removed
+### Fixed
+
+## [2.3.0] - 2024-07-24
+### Added
 - Playback: workaround for 'Preferences\Playback\Output' window being shown in some cases when disconnecting a device. Disabled by default. It's only available if also the workaround for 'Output invalidated...' is enabled.
 ## Changed
 - Playback: workaround for 'Output invalidated...' is now configurable, dummy device can be set to null or primary device.
@@ -59,7 +66,6 @@
 ### Removed
 ### Fixed
 - Configuration: .json files at 'foobar2000\js_data\presets\global' not being saved with the calculated properties based on user values from other files.
-
 ## [2.2.0] - 2024-03-21
 ### Added
 - Configuration: expanded user configurable file at '[FOOBAR PROFILE FOLDER]\js_data\presets\global\globSettings.json' with a new setting to check OS features on every panel startup. Enabled by default. This has been the default behavior since OS' features check was implemented, but it can now be disabled to improve init performance a bit, specially at foobar2000 startup (since it seems to hang in some cases when running it on slow HDDs or systems).
@@ -436,7 +442,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.3.0...HEAD
+[2.3.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.0.0...v2.1.0
