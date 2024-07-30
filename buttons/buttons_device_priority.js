@@ -1,5 +1,5 @@
 ﻿'use strict';
-//24/07/24
+//30/07/24
 
 /*
 	Output device priority
@@ -26,7 +26,7 @@ include('..\\helpers\\callbacks_xxx.js');
 /* global removeEventListenerSelf:readable */
 
 var prefix = 'dp_'; // NOSONAR[global]
-var version = '2.3.0'; // NOSONAR[global]
+var version = '2.4.0'; // NOSONAR[global]
 
 try { window.DefineScript('Output device priority button', { author: 'regorxxx', version, features: { drag_n_drop: false } }); } catch (e) { /* May be loaded along other buttons */ }
 
