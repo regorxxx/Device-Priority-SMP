@@ -46,13 +46,14 @@
 
 ## [Unreleased][]
 ### Added
-## Changed
+### Changed
+- Helpers: updated helpers.
 ### Removed
 ### Fixed
 
 ## [2.4.0] - 2024-07-30
 ### Added
-## Changed
+### Changed
 - Helpers: updated helpers.
 ### Removed
 ### Fixed
@@ -60,7 +61,7 @@
 ## [2.3.0] - 2024-07-24
 ### Added
 - Playback: workaround for 'Preferences\Playback\Output' window being shown in some cases when disconnecting a device. Disabled by default. It's only available if also the workaround for 'Output invalidated...' is enabled.
-## Changed
+### Changed
 - Playback: workaround for 'Output invalidated...' is now configurable, dummy device can be set to null or primary device.
 - Playback: playback fix is now extended up to 2 secs retrying (12 steps).
 - UI: device list specifies when a device entry is associated to exclusive mode.
