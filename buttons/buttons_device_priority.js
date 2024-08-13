@@ -1,5 +1,5 @@
 ﻿'use strict';
-//30/07/24
+//13/08/24
 
 /*
 	Output device priority
@@ -26,7 +26,7 @@ include('..\\helpers\\callbacks_xxx.js');
 /* global removeEventListenerSelf:readable */
 
 var prefix = 'dp_'; // NOSONAR[global]
-var version = '2.4.0'; // NOSONAR[global]
+var version = '2.4.1'; // NOSONAR[global]
 
 try { window.DefineScript('Output device priority button', { author: 'regorxxx', version, features: { drag_n_drop: false } }); } catch (e) { /* May be loaded along other buttons */ }
 
@@ -52,11 +52,11 @@ const devicesPriorityFile = folders.data + 'devices_priority.json';
 
 addButton({
 	'Output device priority': new ThemedButton({ x: 0, y: 0, w: _gr.CalcTextWidth('Auto-device', _gdiFont(globFonts.button.name, globFonts.button.size * buttonsBar.config.scale)) + 30 * _scale(1, false) / _scale(buttonsBar.config.scale), h: 22 }, 'Auto-device', function () {
-		const size = 5;
+		const length = 5;
 		const file = _isFile(devicesPriorityFile)
 			? _jsonParseFileCheck(devicesPriorityFile, 'Priority list', 'Output device priority', utf8)
 			: null;
-		const priorityList = file || [...Array(size)].map(() => { return { name: null, device_id: null }; });
+		const priorityList = file || Array.from({ length }, () => { return { name: null, device_id: null }; });
 		const menu = new _menu({ onBtnUp: () => devicePriority.priorityList = file || [] });
 		menu.newEntry({ entryText: 'Device priority:', func: null, flags: MF_GRAYED });
 		menu.newEntry({ entryText: 'sep' });
@@ -164,9 +164,9 @@ addButton({
 				const options = [
 					{ name: 'Disabled', val: -1 },
 					{ name: 'Aggressive', val: 1 },
-					{ name: '10 ms', val: 10  },
-					{ name: '25 ms', val: 25  },
-					{ name: '50 ms', val: 50  },
+					{ name: '10 ms', val: 10 },
+					{ name: '25 ms', val: 25 },
+					{ name: '50 ms', val: 50 },
 				];
 				options.forEach((option) => {
 					menu.newEntry({
@@ -189,7 +189,7 @@ addButton({
 			? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8)
 			: JSON.parse(fb.GetOutputDevices());
 		const optionsName = [];
-		range(1, size, 1).forEach((idx) => {
+		range(1, length, 1).forEach((idx) => {
 			subMenuName.push(menu.newMenu('Set Device ' + idx));
 			const currMenu = subMenuName[idx - 1];
 			const currEntry = priorityList[idx - 1];
