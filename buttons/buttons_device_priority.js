@@ -1,5 +1,5 @@
 ﻿'use strict';
-//13/08/24
+//02/10/24
 
 /*
 	Output device priority
@@ -221,6 +221,20 @@ addButton({
 				});
 				menu.newEntry({ menuName: currMenu, entryText: 'sep' });
 			}
+			{	// Device settings
+				const subMenu = menu.newMenu('Device specific settings', currMenu);
+				menu.newEntry({
+					menuName: subMenu, entryText: 'No pause fix', func: () => {
+						fb.ShowPopupMessage('Workaround for devices which restart playback from the beginning when pressing pause button. If active, playback is forced to be paused at the last known playback time value.', 'Auto-Device');
+						priorityList[idx - 1].bFixPause = !priorityList[idx - 1].bFixPause;
+						if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t').replace(/\n/g, '\r\n'))) {
+							console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')');
+						}
+					}, flags: currDev ? MF_ENABLED : MF_GRAYED
+				});
+				menu.newCheckMenuLast(() => !!priorityList[idx - 1].bFixPause);
+				menu.newEntry({ menuName: currMenu, entryText: 'sep' });
+			}
 			{	// Device list
 				[{ name: 'None' }, { name: 'Not connected device' }, { name: 'sep' }, ...options].forEach((entry, index) => {
 					// Create names for all entries
@@ -288,6 +302,23 @@ const devicePriority = {
 		devicePriority.manualDevice = null;
 		outputDevicePriority();
 	},
+	pauseFixFunc: (reason) => {
+		if (!devicePriority.bFixPause) { removeEventListenerSelf(); }
+		if (!devicePriority.properties.bEnabled[1]) { return; }
+		if (reason !== 1) { return; }
+		if (fb.IsPlaying) {
+			const nowPlaying = fb.GetNowPlaying();
+			if (!nowPlaying) { setTimeout(devicePriority.pauseFixFunc, 60, reason); }
+			else if (devicePriority.nowPlaying.handle.RawPath === nowPlaying.RawPath) {
+				if (!fb.IsPaused) { fb.Pause(); }
+				setTimeout(() => {
+					fb.PlaybackTime = devicePriority.nowPlaying.time;
+					if (!fb.IsPaused) { fb.Pause(); }
+				}, 60);
+			}
+		}
+	},
+	bFixPause: false,
 	properties: buttonsBar.buttons['Output device priority'].buttonsProperties,
 	manualDevice: null,
 	priorityList: _isFile(devicesPriorityFile)
@@ -321,6 +352,17 @@ function outputDevicePriority() {
 		const idx = devices.findIndex((dev) => dev.name === device.name || dev.device_id === device.device_id);
 		if (idx !== -1) {
 			const currDevice = devices[idx];
+			const old = devicePriority.bFixPause;
+			devicePriority.bFixPause = device.bFixPause;
+			if (old !== devicePriority.bFixPause) {
+				if (devicePriority.bFixPause) {
+					addEventListener('on_playback_starting', devicePriority.pauseFixFunc);
+					addEventListener('on_playback_time', cacheNowPlaying);
+				} else {
+					removeEventListener('on_playback_starting', devicePriority.pauseFixFunc);
+					removeEventListener('on_playback_time', cacheNowPlaying);
+				}
+			}
 			if (currDevice.active) { bDone = true; break; }
 			devicePriority.bOmitCallback = true;
 			if (primOut) { fb.SetOutputDevice(primOut.output_id, primOut.device_id); }

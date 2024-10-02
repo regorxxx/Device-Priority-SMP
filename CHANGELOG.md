@@ -47,6 +47,7 @@
 
 ## [Unreleased][]
 ### Added
+- Playback: workaround for devices which restart playback from the beginning when pressing pause button. If active, playback is forced to be paused at the last known playback time value. This setting is available per device instead of globally.
 ### Changed
 - Helpers: updated helpers.
 ### Removed
