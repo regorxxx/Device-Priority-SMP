@@ -2,6 +2,7 @@
 
 ## [Table of Contents]
 - [Unreleased](#unreleased)
+- [2.5.0](#250---2024-10-09)
 - [2.4.1](#241---2024-08-13)
 - [2.4.0](#240---2024-07-30)
 - [2.3.0](#230---2024-07-24)
@@ -47,11 +48,18 @@
 
 ## [Unreleased][]
 ### Added
+### Changed
+### Removed
+### Fixed
+
+## [2.5.0] - 2024-10-09
+### Added
 - Playback: workaround for devices which restart playback from the beginning when pressing pause button. If active, playback is forced to be paused at the last known playback time value. This setting is available per device instead of globally.
 ### Changed
 - [JSplitter (SMP)](https://foobar2000.ru/forum/viewtopic.php?t=6378&start=360) support and ES2021 compatibility.
 - Helpers: in case saving a file throws an error due to long paths (+255 chars) a warning popup will be shown.
 - Helpers: updated helpers.## Removed
+### Removed
 ### Fixed
 
 ## [2.4.0] - 2024-08-13
@@ -461,7 +469,8 @@
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.4.1...HEAD
+[Unreleased]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.5.0...HEAD
+[2.5.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.4.1...v2.5.0
 [2.4.1]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/regorxxx/Device-Priority-SMP/compare/v2.2.0...v2.3.0
