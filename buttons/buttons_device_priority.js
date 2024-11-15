@@ -1,5 +1,5 @@
 ﻿'use strict';
-//09/10/24
+//15/11/24
 
 /*
 	Output device priority
@@ -59,7 +59,7 @@ addButton({
 		const priorityList = file || Array.from({ length }, () => { return { name: null, device_id: null }; });
 		const menu = new _menu({ onBtnUp: () => devicePriority.priorityList = file || [] });
 		menu.newEntry({ entryText: 'Device priority:', func: null, flags: MF_GRAYED });
-		menu.newEntry({ entryText: 'sep' });
+		menu.newSeparator();
 		menu.newEntry({
 			entryText: 'Export device list' + (_isFile(devicesFile) ? '\t(overwrite)' : '\t(new)'), func: () => {
 				fb.ShowPopupMessage('File is exported at:\n' + devicesFile + '\n\nExport first the device list with all the desired devices connected to use them at a later point (even if the devices are not connected).\n\n\'Set Device X\' menus will only show either currently connected devices or the ones from the exported list.\n\nIn other words, you can only assign devices to the priority list if they are available on the menus. A disconnected device, not available on the exported list, will be shown as \'Not connected device\', with its name at top. Functionality will be the same (for auto-switching purposes) but it will not be on the list of available devices, nor clickable (so you will not be able to set it to another position unless you connect it first).', 'Output device priority');
@@ -96,7 +96,7 @@ addButton({
 				}, flags: toAdd.length && bFile ? MF_ENABLED : MF_GRAYED
 			});
 		}
-		menu.newEntry({ entryText: 'sep' });
+		menu.newSeparator();
 		menu.newEntry({
 			entryText: 'Enable Auto-Device?', func: () => {
 				this.buttonsProperties.bEnabled[1] = !this.buttonsProperties.bEnabled[1];
@@ -122,7 +122,7 @@ addButton({
 				}
 			});
 			menu.newCheckMenuLast(() => this.buttonsProperties.bStartup[1]);
-			menu.newEntry({ menuName: subMenuName, entryText: 'sep' });
+			menu.newSeparator(subMenuName);
 			menu.newEntry({
 				menuName: subMenuName,
 				entryText: 'Playback stop fix', func: () => {
@@ -135,7 +135,7 @@ addButton({
 			{
 				const subMenuNameFix = menu.newMenu('Output invalidated fix', subMenuName);
 				menu.newEntry({ menuName: subMenuNameFix, entryText: 'Workaround using dummy device:', flags: MF_GRAYED });
-				menu.newEntry({ menuName: subMenuNameFix, entryText: 'sep' });
+				menu.newSeparator(subMenuNameFix);
 				const options = [
 					{ name: 'No Fix' },
 					{ name: 'Null Output' },
@@ -160,7 +160,7 @@ addButton({
 					? menu.newMenu('No device fix', subMenuName)
 					: menu.newMenu('No device fix\t(output invalidated disabled)', subMenuName, MF_GRAYED);
 				menu.newEntry({ menuName: subMenuNameFix, entryText: 'Workaround forcing a device every X ms:', flags: MF_GRAYED });
-				menu.newEntry({ menuName: subMenuNameFix, entryText: 'sep' });
+				menu.newSeparator(subMenuNameFix);
 				const options = [
 					{ name: 'Disabled', val: -1 },
 					{ name: 'Aggressive', val: 1 },
@@ -183,7 +183,7 @@ addButton({
 				menu.newCheckMenuLast(() => options.findIndex((o) => o.val === this.buttonsProperties.fixNoDevice[1]), options.length);
 			}
 		}
-		menu.newEntry({ entryText: 'sep' });
+		menu.newSeparator();
 		const subMenuName = [];
 		const options = _isFile(devicesFile)
 			? _jsonParseFileCheck(devicesFile, 'Devices list', 'Output device priority', utf8)
@@ -200,7 +200,7 @@ addButton({
 				: '';
 			{	// Header
 				menu.newEntry({ menuName: currMenu, entryText: 'Current device: ' + (currDev ? (currDevR.length > 20 ? currDevR.substring(0, 20) + ' ...' : currDevR) : '-'), func: null, flags: MF_GRAYED });
-				menu.newEntry({ menuName: currMenu, entryText: 'sep' });
+				menu.newSeparator(currMenu);
 			}
 			{	// Volume
 				const currVol = currDev && Object.hasOwn(currEntry, 'volume') ? currEntry.volume : null;
@@ -219,7 +219,7 @@ addButton({
 						}
 					}, flags: currDev ? MF_ENABLED : MF_GRAYED
 				});
-				menu.newEntry({ menuName: currMenu, entryText: 'sep' });
+				menu.newSeparator(currMenu);
 			}
 			{	// Device settings
 				const subMenu = menu.newMenu('Device specific settings', currMenu);
@@ -233,13 +233,13 @@ addButton({
 					}, flags: currDev ? MF_ENABLED : MF_GRAYED
 				});
 				menu.newCheckMenuLast(() => !!priorityList[idx - 1].bFixPause);
-				menu.newEntry({ menuName: currMenu, entryText: 'sep' });
+				menu.newSeparator(currMenu);
 			}
 			{	// Device list
 				[{ name: 'None' }, { name: 'Not connected device' }, { name: 'sep' }, ...options].forEach((entry, index) => {
 					// Create names for all entries
-					if (entry.name === 'sep') {
-						menu.newEntry({ menuName: currMenu, entryText: 'sep' });
+					if (menu.isSeparator(entry)) {
+						menu.newSeparator(currMenu);
 						optionsName.push(entry.name);
 					}
 					else {

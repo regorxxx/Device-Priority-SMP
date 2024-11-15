@@ -52,6 +52,7 @@
 - Readmes: Ctrl + L. Click on any entry within 'Add button' submenu on toolbar now opens directly their associated readme (without actually adding the button).
 ### Changed
 - Helpers: updated helpers.
+- Helpers: general code cleanup on menus internal code. Please report any bug on extra separators or menu entries not working as expected.
 ### Removed
 ### Fixed
 - UI: '&' being displayed as '_' on tooltips.
