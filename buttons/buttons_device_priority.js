@@ -1,5 +1,5 @@
 ﻿'use strict';
-//15/11/24
+//25/11/24
 
 /*
 	Output device priority
@@ -194,7 +194,7 @@ addButton({
 			const currMenu = subMenuName[idx - 1];
 			const currEntry = priorityList[idx - 1];
 			const currDev = Object.hasOwn(currEntry, 'name') ? currEntry.name : null;
-			const bExclusive = currDev && currDev.indexOf('exclusive') !== -1;
+			const bExclusive = currDev && currDev.includes('exclusive');
 			const currDevR = currDev
 				? currDev.replace('DS : ', '').replace('Default : ', '').replace('ASIO : ', '').replace(' [Exclusive]', '').replace(' exclusive', '') + (bExclusive ? '\t[exclusive]' : '')
 				: '';
@@ -245,7 +245,7 @@ addButton({
 					else {
 						let deviceName = entry.name
 							.replace('Default : ', '');
-						const bExclusive = deviceName.indexOf('exclusive') !== -1;
+						const bExclusive = deviceName.includes('exclusive');
 						deviceName = deviceName.replace(' [exclusive]', '').replace(' exclusive', '');
 						deviceName = deviceName.length > 40 ? deviceName.substring(0, 40) + ' ...' : deviceName;
 						if (bExclusive) { deviceName += '\t[exclusive]'; }
