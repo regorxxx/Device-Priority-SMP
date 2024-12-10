@@ -1,5 +1,5 @@
 ﻿'use strict';
-//25/11/24
+//09/12/24
 
 /*
 	Output device priority
@@ -35,10 +35,10 @@ checkCompatible('1.4.0', 'fb');
 
 prefix = getUniquePrefix(prefix, ''); // Puts new ID before '_'
 var newButtonsProperties = { // NOSONAR[global]
-	bStartup: ['Force device at startup?', true, { func: isBoolean }, true],
-	bEnabled: ['Auto-device enabled?', true, { func: isBoolean }, true],
+	bStartup: ['Force device at startup', true, { func: isBoolean }, true],
+	bEnabled: ['Auto-device enabled', true, { func: isBoolean }, true],
 	refreshRate: ['Check devices every X ms (0 to disable)', 600, { func: isInt, range: [[0, 0], [50, Infinity]] }, 600],
-	bIconMode: ['Icon-only mode?', false, { func: isBoolean }, false],
+	bIconMode: ['Icon-only mode', false, { func: isBoolean }, false],
 	bFixPlayback: ['Playback stop fix', true, { func: isBoolean }, true],
 	fixInvalidated: ['Output invalidated fix (0 to disable)', 1, { func: isInt, range: [[0, 2]] }, 1],
 	fixNoDevice: ['No device fix (-1 to disable)', -1, { func: isInt, eq: [-1, 1, 10, 25, 50] }, -1]
