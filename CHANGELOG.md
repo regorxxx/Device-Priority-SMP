@@ -51,6 +51,7 @@
 - UI: toolbar tooltip now shows 'Shift + Win + R. Click' shortcut to open SMP/JSpliter panel menu (which works globally on any script and panel, at any position).
 - Readmes: Ctrl + L. Click on any entry within 'Add button' submenu on toolbar now opens directly their associated readme (without actually adding the button).
 ### Changed
+- Playback: improved 'Playback stop fix' behavior which should now respect when the user pauses the audio on purpose. So pausing playback and powering off a device will not restart playback on the fallback device, but just change the device and keep it paused. To identify when the playback is paused on purpose, the script checks if audio has been paused for more than 1 second.
 - Helpers: updated helpers.
 - Helpers: general code cleanup on menus internal code. Please report any bug on extra separators or menu entries not working as expected.
 ### Removed

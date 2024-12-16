@@ -1,5 +1,5 @@
 ﻿'use strict';
-//09/12/24
+//16/12/24
 
 /*
 	Output device priority
@@ -104,10 +104,10 @@ addButton({
 				this.switchActive();
 				if (this.buttonsProperties.bEnabled[1]) {
 					if (devicePriority.refreshRate !== 0) { devicePriority.refreshFuncId = devicePriority.refreshFunc(); }
-					addEventListener('on_output_device_changed', devicePriority.callbackFunc);
+					addEventListener('on_output_device_changed', devicePriority.callbackFunc.bind(devicePriority));
 				} else {
 					if (devicePriority.refreshRate !== 0) { clearInterval(devicePriority.refreshFuncId); }
-					removeEventListener('on_output_device_changed', devicePriority.callbackFunc);
+					removeEventListener('on_output_device_changed', devicePriority.callbackFunc.bind(devicePriority));
 				}
 			}
 		});
@@ -286,33 +286,36 @@ addButton({
 buttonsBar.buttons['Output device priority'].active = buttonsBar.buttons['Output device priority'].buttonsProperties.bEnabled[1];
 // Helpers
 const devicePriority = {
-	nowPlaying: { time: -1, plsIdx: -1, itemIdx: -1, handle: null, bFixing: false },
+	nowPlaying: { time: -1, plsIdx: -1, itemIdx: -1, handle: null, bFixing: false, pauseTime: Infinity },
 	bOmitCallback: false,
 	referenceDevices: fb.GetOutputDevices(),
 	refreshRate: buttonsBar.buttons['Output device priority'].buttonsProperties.refreshRate[1],
-	refreshFunc: repeatFn(() => {
+	refreshFunc: repeatFn(function () {
 		const newDevices = fb.GetOutputDevices();
-		if (newDevices !== devicePriority.referenceDevices) { cacheNowPlaying(); outputDevicePriority(); }
+		if (newDevices !== this.referenceDevices) { cacheNowPlaying(); outputDevicePriority(); }
 	}, buttonsBar.buttons['Output device priority'].buttonsProperties.refreshRate[1]),
 	refreshFuncId: null,
-	callbackFunc: () => {
-		if (!devicePriority.properties.bEnabled[1]) { removeEventListenerSelf(); }
-		if (devicePriority.bOmitCallback) { devicePriority.bOmitCallback = false; return; }
+	callbackFunc: function () {
+		if (!this.properties.bEnabled[1]) { removeEventListenerSelf(); }
+		if (this.bOmitCallback) { this.bOmitCallback = false; return; }
 		cacheNowPlaying();
-		devicePriority.manualDevice = null;
+		this.manualDevice = null;
 		outputDevicePriority();
 	},
-	pauseFixFunc: (reason) => {
-		if (!devicePriority.bFixPause) { removeEventListenerSelf(); }
-		if (!devicePriority.properties.bEnabled[1]) { return; }
+	isUserPaused: function () {
+		return (Date.now() - this.nowPlaying.pauseTime) > 1000;
+	},
+	pauseFixFunc: function (reason) {
+		if (!this.bFixPause) { removeEventListenerSelf(); }
+		if (!this.properties.bEnabled[1]) { return; }
 		if (reason !== 1) { return; }
 		if (fb.IsPlaying) {
 			const nowPlaying = fb.GetNowPlaying();
-			if (!nowPlaying) { setTimeout(devicePriority.pauseFixFunc, 60, reason); }
-			else if (devicePriority.nowPlaying.handle.RawPath === nowPlaying.RawPath) {
+			if (!nowPlaying) { setTimeout(this.pauseFixFunc.bind(this), 60, reason); }
+			else if (this.nowPlaying.handle && this.nowPlaying.handle.RawPath === nowPlaying.RawPath) {
 				if (!fb.IsPaused) { fb.Pause(); }
 				setTimeout(() => {
-					fb.PlaybackTime = devicePriority.nowPlaying.time;
+					fb.PlaybackTime = this.nowPlaying.time;
 					if (!fb.IsPaused) { fb.Pause(); }
 				}, 60);
 			}
@@ -356,10 +359,10 @@ function outputDevicePriority() {
 			devicePriority.bFixPause = device.bFixPause;
 			if (old !== devicePriority.bFixPause) {
 				if (devicePriority.bFixPause) {
-					addEventListener('on_playback_starting', devicePriority.pauseFixFunc);
+					addEventListener('on_playback_starting', devicePriority.pauseFixFunc.bind(devicePriority));
 					addEventListener('on_playback_time', cacheNowPlaying);
 				} else {
-					removeEventListener('on_playback_starting', devicePriority.pauseFixFunc);
+					removeEventListener('on_playback_starting', devicePriority.pauseFixFunc.bind(devicePriority));
 					removeEventListener('on_playback_time', cacheNowPlaying);
 				}
 			}
@@ -374,7 +377,7 @@ function outputDevicePriority() {
 			}
 			// Try to fix playback
 			if (devicePriority.properties.bFixPlayback[1]) {
-				if (fb.IsPaused) { fb.PlayOrPause(); } // Pausing on power off
+				if (!devicePriority.isUserPaused() && fb.IsPaused) { fb.PlayOrPause(); } // Pausing on power off
 				devicePriority.nowPlaying.bFixing = true;
 				Promise.allSettled(
 					[50, 100, 150, 200, 250, 300, 400, 600, 800, 1000, 1500, 2000].map((ms, i) => { // Playback restarted
@@ -412,23 +415,28 @@ function outputDevicePriority() {
 }
 
 function cacheNowPlaying() {
-	if (fb.IsPlaying && !devicePriority.nowPlaying.bFixing) {
-		const playingItem = plman.GetPlayingItemLocation();
-		devicePriority.nowPlaying.time = -1;
-		devicePriority.nowPlaying.plsIdx = -1;
-		devicePriority.nowPlaying.itemIdx = -1;
-		devicePriority.nowPlaying.handle = fb.GetNowPlaying();
-		if (devicePriority.nowPlaying.handle && playingItem.IsValid) {
-			devicePriority.nowPlaying.plsIdx = playingItem.PlaylistIndex;
-			devicePriority.nowPlaying.itemIdx = playingItem.PlaylistItemIndex;
-			devicePriority.nowPlaying.time = fb.PlaybackTime;
+	if (fb.IsPlaying) {
+		if (!devicePriority.nowPlaying.bFixing) {
+			const playingItem = plman.GetPlayingItemLocation();
+			devicePriority.nowPlaying.time = -1;
+			devicePriority.nowPlaying.plsIdx = -1;
+			devicePriority.nowPlaying.itemIdx = -1;
+			devicePriority.nowPlaying.handle = fb.GetNowPlaying();
+			if (devicePriority.nowPlaying.handle && playingItem.IsValid) {
+				devicePriority.nowPlaying.plsIdx = playingItem.PlaylistIndex;
+				devicePriority.nowPlaying.itemIdx = playingItem.PlaylistItemIndex;
+				devicePriority.nowPlaying.time = fb.PlaybackTime;
+				if (!fb.IsPaused && devicePriority.properties.bFixPlayback[1]) {
+					devicePriority.nowPlaying.pauseTime = Infinity;
+				}
+			}
 		}
 	}
 }
 
 function fixNowPlaying(i) {
 	// Workaround for Bluetooth devices pausing on power off
-	if (fb.IsPaused) { fb.PlayOrPause(); }
+	if (!devicePriority.isUserPaused() && fb.IsPaused) { fb.PlayOrPause(); }
 	// It was playing and something went wrong (like device not available)
 	if ((!fb.IsPlaying || fb.PlaybackTime < devicePriority.nowPlaying.time) && devicePriority.nowPlaying.handle !== null) {
 		if (devicePriority.nowPlaying.plsIdx !== -1 && devicePriority.nowPlaying.plsIdx < plman.PlaylistCount) {
@@ -456,9 +464,23 @@ function fixNowPlaying(i) {
 // Startup
 if (devicePriority.properties.bEnabled[1]) {
 	// Add callback
-	addEventListener('on_output_device_changed', devicePriority.callbackFunc);
+	addEventListener('on_output_device_changed', devicePriority.callbackFunc.bind(devicePriority));
 	// Check device on startup
 	if (devicePriority.properties.bStartup[1]) { outputDevicePriority(); }
+	if (devicePriority.properties.bFixPlayback[1]) {
+		if (fb.IsPlaying && fb.IsPaused) { devicePriority.nowPlaying.pauseTime = Date.now(); }
+		addEventListener('on_playback_pause', (state) => {
+			devicePriority.nowPlaying.pauseTime = state
+				? Date.now()
+				: Infinity;
+		});
+		addEventListener('on_playback_new_track', () => {
+			devicePriority.nowPlaying.pauseTime = Infinity;
+		});
+		addEventListener('on_playback_stop', () => {
+			devicePriority.nowPlaying.pauseTime = Infinity;
+		});
+	}
 	// Listen to new devices connection
 	if (devicePriority.refreshRate !== 0) { devicePriority.refreshFuncId = devicePriority.refreshFunc(); }
 }
