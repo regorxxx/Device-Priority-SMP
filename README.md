@@ -3,7 +3,7 @@
 [![CodeFactor][codefactor_badge]](https://www.codefactor.io/repository/github/regorxxx/Device-Priority-SMP/overview/main)
 [![CodacyBadge][codacy_badge]](https://www.codacy.com/gh/regorxxx/Device-Priority-SMP/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=regorxxx/Device-Priority-SMP&amp;utm_campaign=Badge_Grade)
 ![GitHub](https://img.shields.io/github/license/regorxxx/Device-Priority-SMP)  
-[Spider Monkey Panel](https://theqwertiest.github.io/foo_spider_monkey_panel) Script for [foobar2000](https://www.foobar2000.org), built within a button. Automate foobar2000's output without having to select devices manually every time one is disconnected/connected. Wireless, headphone, and server devices auto-switch made easy.
+[Spider Monkey Panel](https://theqwertiest.github.io/foo_spider_monkey_panel)/[JSplitter](https://foobar2000.ru/forum/viewtopic.php?t=6378) Script for [foobar2000](https://www.foobar2000.org), built within a button. Automate foobar2000's output without having to select devices manually every time one is disconnected/connected. Wireless, headphone, and server devices auto-switch made easy.
 
 ![Auto-device](https://user-images.githubusercontent.com/83307074/125860905-3127eee3-5618-4487-a181-b8defbd6031f.gif)
 
@@ -24,9 +24,22 @@
 
 ![Auto-device2](https://user-images.githubusercontent.com/83307074/125861102-9253716b-ded6-41d5-83b5-84664edeb17f.gif)
 
+## Requirements
+ 1. [Spider Monkey Panel](https://theqwertiest.github.io/foo_spider_monkey_panel): Component required to install this javaScript addon. Only x32.
+ 2. [JSplitter](https://foobar2000.ru/forum/viewtopic.php?t=6378): Component required to install this javaScript addon. Both x32 and x64.
+ 3. FontAwesome: found at ’.\ resources\fontawesome-webfont.ttf’. See installation notes.
+
 ## Installation
-See [_TIPS and INSTALLATION (txt)](https://github.com/regorxxx/Device-Priority-SMP/blob/main/_TIPS%20and%20INSTALLATION.txt) and the [Wiki](https://github.com/regorxxx/Device-Priority-SMP/wiki/Installation).
+See [_INSTALLATION (txt)](https://github.com/regorxxx/Device-Priority-SMP/blob/main/_INSTALLATION.txt) and the [Wiki](https://github.com/regorxxx/Device-Priority-SMP/wiki/Installation).
 Not properly following the installation instructions will result in scripts not working as intended. Please don't report errors before checking this.
+
+## Support
+ 1. [Issues tracker](https://github.com/regorxxx/Device-Priority-SMP/issues).
+ 2. [Hydrogenaudio forum](https://hydrogenaud.io/index.php/topic,121615.0.html).
+ 3. [Wiki](https://github.com/regorxxx/Device-Priority-SMP/wiki).
+
+## Nightly releases
+Zip file [from GitHub](https://github.com/regorxxx/Device-Priority-SMP/archive/refs/heads/main.zip) (using the latest commit).
 
 [changelog]: CHANGELOG.md
 [version_badge]: https://img.shields.io/github/release/regorxxx/Device-Priority-SMP.svg
