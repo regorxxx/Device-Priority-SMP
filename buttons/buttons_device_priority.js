@@ -1,5 +1,5 @@
 ﻿'use strict';
-//13/02/25
+//12/03/25
 
 /*
 	Output device priority
@@ -28,7 +28,7 @@ include('..\\helpers\\callbacks_xxx.js');
 var prefix = 'dp_'; // NOSONAR[global]
 var version = '2.5.0'; // NOSONAR[global]
 
-try { window.DefineScript('Output device priority button', { author: 'regorxxx', version, features: { drag_n_drop: false } }); } catch (e) { /* May be loaded along other buttons */ }
+try { window.DefineScript('Output device priority button', { author: 'regorxxx', version, features: { drag_n_drop: false } }); } catch (e) { /* May be loaded along other buttons */ } // eslint-disable-line no-unused-vars
 
 checkCompatible('1.6.1', 'smp');
 checkCompatible('1.4.0', 'fb');
@@ -214,7 +214,7 @@ addButton({
 								input = utils.InputBox(window.ID, 'Input volume value (from 0 to 100):\n(Empty to not change volume)', 'Output device priority', currVol !== null ? 100 + currVol : '', true);
 								if (input === '') { input = null; }
 								if (input !== null) { input = -100 + Math.abs(Number(input)); }
-							} catch (e) { return; }
+							} catch (e) { return; } // eslint-disable-line no-unused-vars
 							if (input === currVol) { return; }
 							priorityList[idx - 1].volume = input;
 							if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t').replace(/\n/g, '\r\n'))) {
