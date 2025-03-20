@@ -1,5 +1,5 @@
 ﻿'use strict';
-//12/03/25
+//20/03/25
 
 /*
 	Output device priority
@@ -433,7 +433,7 @@ function cacheNowPlaying() {
 			if (devicePriority.nowPlaying.handle && playingItem.IsValid) {
 				devicePriority.nowPlaying.plsIdx = playingItem.PlaylistIndex;
 				devicePriority.nowPlaying.itemIdx = playingItem.PlaylistItemIndex;
-				devicePriority.nowPlaying.time = fb.PlaybackTime;
+				devicePriority.nowPlaying.time = fb.PlaybackTime < Number.MAX_SAFE_INTEGER ? fb.PlaybackTime : 0;
 				if (!fb.IsPaused && devicePriority.properties.bFixPlayback[1]) {
 					devicePriority.nowPlaying.pauseTime = Infinity;
 				}
@@ -446,7 +446,7 @@ function fixNowPlaying(i) {
 	// Workaround for Bluetooth devices pausing on power off
 	if (!devicePriority.isUserPaused() && fb.IsPaused) { fb.PlayOrPause(); }
 	// It was playing and something went wrong (like device not available)
-	if ((!fb.IsPlaying || fb.PlaybackTime < devicePriority.nowPlaying.time) && devicePriority.nowPlaying.handle !== null) {
+	if ((!fb.IsPlaying || (fb.PlaybackTime < Number.MAX_SAFE_INTEGER ? fb.PlaybackTime : 0) < devicePriority.nowPlaying.time) && devicePriority.nowPlaying.handle !== null) {
 		if (devicePriority.nowPlaying.plsIdx !== -1 && devicePriority.nowPlaying.plsIdx < plman.PlaylistCount) {
 			const cache = { plsIdx: plman.ActivePlayist, itemIdx: plman.GetPlaylistFocusItemIndex(plman.ActivePlayist) };
 			let bChanged = false;
