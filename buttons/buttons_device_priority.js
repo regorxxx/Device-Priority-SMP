@@ -1,5 +1,5 @@
 ﻿'use strict';
-//20/03/25
+//06/05/25
 
 /*
 	Output device priority
@@ -256,7 +256,9 @@ addButton({
 							optionsName.push(deviceName);
 							menu.newEntry({
 								menuName: currMenu, entryText: deviceName, func: () => {
-									priorityList[idx - 1] = entry.name !== 'None' ? { name: entry.name, device_id: entry.device_id } : { name: null, device_id: null };
+									priorityList[idx - 1] = entry.name !== 'None'
+										? { name: entry.name, device_id: entry.device_id, output_id: entry.output_id }
+										: { name: null, device_id: null, output_id: null };
 									if (!_save(devicesPriorityFile, JSON.stringify(priorityList, null, '\t').replace(/\n/g, '\r\n'))) {
 										console.log('Output device priority: file saving failed (' + devicesPriorityFile + ')');
 									}
@@ -360,7 +362,7 @@ function outputDevicePriority() {
 	let bDone = false;
 	for (let device of devicePriority.priorityList) {
 		if (typeof device !== 'object' || !Object.hasOwn(device, 'name')) { continue; }
-		const idx = devices.findIndex((dev) => dev.name === device.name || dev.device_id === device.device_id);
+		const idx = devices.findIndex((dev) => (dev.name === device.name || dev.device_id === device.device_id) && (!device.output_id || dev.output_id === device.output_id));
 		if (idx !== -1) {
 			const currDevice = devices[idx];
 			const old = devicePriority.bFixPause;
