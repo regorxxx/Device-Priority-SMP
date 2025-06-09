@@ -63,6 +63,7 @@
 ### Fixed
 - UI: '&' being displayed as '_' on tooltips.
 - Workaround for foobar2000 bug, the reported playback time was a non-safe value and could lead to crashes. See [here](https://hydrogenaud.io/index.php/topic,127620.msg1061036).
+- UI: multiple workarounds for rounded rectangles not being painted properly or producing crashes (SMP limitation).
 
 ## [2.5.0] - 2024-10-09
 ### Added
