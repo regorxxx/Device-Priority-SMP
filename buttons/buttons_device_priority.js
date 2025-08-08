@@ -1,5 +1,5 @@
 ﻿'use strict';
-//13/05/25
+//07/08/25
 
 /*
 	Output device priority
@@ -450,10 +450,10 @@ function fixNowPlaying(i) {
 	// It was playing and something went wrong (like device not available)
 	if ((!fb.IsPlaying || (fb.PlaybackTime < Number.MAX_SAFE_INTEGER ? fb.PlaybackTime : 0) < devicePriority.nowPlaying.time) && devicePriority.nowPlaying.handle !== null) {
 		if (devicePriority.nowPlaying.plsIdx !== -1 && devicePriority.nowPlaying.plsIdx < plman.PlaylistCount) {
-			const cache = { plsIdx: plman.ActivePlayist, itemIdx: plman.GetPlaylistFocusItemIndex(plman.ActivePlayist) };
+			const cache = { plsIdx: plman.ActivePlaylist, itemIdx: plman.GetPlaylistFocusItemIndex(plman.ActivePlaylist) };
 			let bChanged = false;
-			if (devicePriority.nowPlaying.plsIdx !== plman.ActivePlayist) {
-				plman.ActivePlayist = devicePriority.nowPlaying.plsIdx;
+			if (devicePriority.nowPlaying.plsIdx !== plman.ActivePlaylist) {
+				plman.ActivePlaylist = devicePriority.nowPlaying.plsIdx;
 				plman.SetPlaylistFocusItem(devicePriority.nowPlaying.plsIdx, devicePriority.nowPlaying.itemIdx);
 				bChanged = true;
 			} else if (cache.itemIdx !== devicePriority.nowPlaying.itemIdx) {
@@ -463,7 +463,7 @@ function fixNowPlaying(i) {
 			fb.PlaybackTime = devicePriority.nowPlaying.time;
 			if (!fb.IsPlaying) { fb.Play(); }
 			if (bChanged) {
-				plman.ActivePlayist = cache.plsIdx;
+				plman.ActivePlaylist = cache.plsIdx;
 				plman.SetPlaylistFocusItem(cache.plsIdx, cache.itemIdx);
 			}
 			console.log('Output device priority: fixed playback at ' + i + 'º retry.');
