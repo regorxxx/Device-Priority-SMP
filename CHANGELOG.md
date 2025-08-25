@@ -62,9 +62,10 @@
 - Helpers: general code cleanup on menus internal code. Please report any bug on extra separators or menu entries not working as expected.
 ### Removed
 ### Fixed
-- UI: '&' being displayed as '_' on tooltips.
 - Workaround for foobar2000 bug, the reported playback time was a non-safe value and could lead to crashes. See [here](https://hydrogenaud.io/index.php/topic,127620.msg1061036).
+- UI: '&' being displayed as '_' on tooltips.
 - UI: multiple workarounds for rounded rectangles not being painted properly or producing crashes (SMP limitation).
+- UI: workaround for DPI checking under multiple OSes, specially for Wine (Unix).
 - Fixed some misspelled terms on UI and variables (which also lead to some minor bugs).
 
 ## [2.5.0] - 2024-10-09
