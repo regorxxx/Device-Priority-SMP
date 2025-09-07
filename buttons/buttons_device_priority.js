@@ -1,5 +1,5 @@
 ﻿'use strict';
-//07/08/25
+//07/09/25
 
 /*
 	Output device priority
@@ -7,7 +7,7 @@
 	Auto-switch according to device priority
  */
 
-/* global menu_panelProperties:readable */
+/* global barProperties:readable */
 include('..\\helpers\\helpers_xxx.js');
 /* global globFonts:readable, VK_SHIFT:readable, MF_GRAYED:readable, checkCompatible:readable, folders:readable, MF_ENABLED:readable, repeatFn:readable */
 include('..\\helpers\\buttons_xxx.js');
@@ -101,7 +101,7 @@ addButton({
 			}
 			menu.newSeparator();
 			menu.newEntry({
-				entryText: 'Enable Auto-Device?', func: () => {
+				entryText: 'Enable Auto-Device', func: () => {
 					this.buttonsProperties.bEnabled[1] = !this.buttonsProperties.bEnabled[1];
 					overwriteProperties(this.buttonsProperties);
 					this.switchActive();
@@ -279,7 +279,7 @@ addButton({
 			let info = 'Set output device priority for auto-switching.';
 			// Modifiers
 			const bShift = utils.IsKeyPressed(VK_SHIFT);
-			const bInfo = typeof menu_panelProperties === 'undefined' || menu_panelProperties.bTooltipInfo[1];
+			const bInfo = typeof barProperties === 'undefined' || barProperties.bTooltipInfo[1];
 			if (bShift || bInfo) {
 				info += '\n-----------------------------------------------------';
 				info += '\n(Shift to bypass auto-switch on device change)';
