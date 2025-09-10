@@ -1,5 +1,5 @@
 ﻿'use strict';
-//07/09/25
+//10/09/25
 
 /*
 	Output device priority
@@ -202,7 +202,7 @@ addButton({
 					? currDev.replace('DS : ', '').replace('Default : ', '').replace('ASIO : ', '').replace(' [Exclusive]', '').replace(' exclusive', '') + (bExclusive ? '\t[exclusive]' : '')
 					: '';
 				{	// Header
-					menu.newEntry({ menuName: currMenu, entryText: 'Current device: ' + (currDev ? (currDevR.length > 20 ? currDevR.substring(0, 20) + ' ...' : currDevR) : '-'), func: null, flags: MF_GRAYED });
+					menu.newEntry({ menuName: currMenu, entryText: 'Current device: ' + (currDev ? currDevR.cut(20) : '-'), func: null, flags: MF_GRAYED });
 					menu.newSeparator(currMenu);
 				}
 				{	// Volume
@@ -250,7 +250,7 @@ addButton({
 								.replace('Default : ', '');
 							const bExclusive = deviceName.includes('exclusive');
 							deviceName = deviceName.replace(' [exclusive]', '').replace(' exclusive', '');
-							deviceName = deviceName.length > 40 ? deviceName.substring(0, 40) + ' ...' : deviceName;
+							deviceName = deviceName.cut(40);
 							if (bExclusive) { deviceName += '\t[exclusive]'; }
 							// Entries
 							optionsName.push(deviceName);
